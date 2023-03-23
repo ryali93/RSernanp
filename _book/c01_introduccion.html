@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="A side-by-side comparison of the Polars and Pandas libraries.">
+
+<title>Curso taller de R - SERNANP - 2&nbsp; Introducción a R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./c02_parte1.html" rel="next">
+<link href="./index.html" rel="prev">
+<link href="./https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Curso taller de R - SERNANP - 2&nbsp; Introducción a R">
+<meta property="og:description" content="A side-by-side comparison of the Polars and Pandas libraries.">
+<meta property="og:image" content="https://github.com/kevinheavey/modern-polars/raw/master/book/resized-og-polar-bear-airpods-no-background.png">
+<meta property="og:site-name" content="Curso taller de R - SERNANP">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Curso taller de R - SERNANP</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="./header_right.qmd">
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ryali93/rsernanp/tree/master/book/"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown  compact">
+    <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-share" role="img">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="">    
+        <li>
+    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=|url|"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="dropdown-text">Twitter</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|"><i class="bi bi-facebook" role="img">
+</i> 
+ <span class="dropdown-text">Facebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="dropdown-text">LinkedIn</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducción a R</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./fig/oso.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c01_introduccion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducción a R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c02_parte1.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptos Básicos de R - Parte 2</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c03_parte2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Manipulación de datos con tidyverse</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#instalación-de-r-rstudio-y-rtools" id="toc-instalación-de-r-rstudio-y-rtools" class="nav-link active" data-scroll-target="#instalación-de-r-rstudio-y-rtools"><span class="toc-section-number">2.1</span>  Instalación de R, RStudio y RTools</a>
+  <ul class="collapse">
+  <li><a href="#r-y-rstudio" id="toc-r-y-rstudio" class="nav-link" data-scroll-target="#r-y-rstudio"><span class="toc-section-number">2.1.1</span>  R y RStudio</a></li>
+  <li><a href="#rtools" id="toc-rtools" class="nav-link" data-scroll-target="#rtools"><span class="toc-section-number">2.1.2</span>  RTools</a></li>
+  </ul></li>
+  <li><a href="#qué-es-r" id="toc-qué-es-r" class="nav-link" data-scroll-target="#qué-es-r"><span class="toc-section-number">2.2</span>  ¿Qué es R?</a></li>
+  <li><a href="#qué-es-rstudio" id="toc-qué-es-rstudio" class="nav-link" data-scroll-target="#qué-es-rstudio"><span class="toc-section-number">2.3</span>  ¿Qué es RStudio?</a></li>
+  <li><a href="#qué-otros-ides-existen-para-r" id="toc-qué-otros-ides-existen-para-r" class="nav-link" data-scroll-target="#qué-otros-ides-existen-para-r"><span class="toc-section-number">2.4</span>  ¿Qué otros IDE’s existen para R?</a></li>
+  <li><a href="#tipos-de-lenguajes-de-programación" id="toc-tipos-de-lenguajes-de-programación" class="nav-link" data-scroll-target="#tipos-de-lenguajes-de-programación"><span class="toc-section-number">2.5</span>  Tipos de lenguajes de programación</a>
+  <ul class="collapse">
+  <li><a href="#lenguaje-compilado" id="toc-lenguaje-compilado" class="nav-link" data-scroll-target="#lenguaje-compilado"><span class="toc-section-number">2.5.1</span>  Lenguaje compilado</a></li>
+  <li><a href="#lenguaje-interpretado" id="toc-lenguaje-interpretado" class="nav-link" data-scroll-target="#lenguaje-interpretado"><span class="toc-section-number">2.5.2</span>  Lenguaje interpretado</a></li>
+  <li><a href="#lenguaje-intermedio" id="toc-lenguaje-intermedio" class="nav-link" data-scroll-target="#lenguaje-intermedio"><span class="toc-section-number">2.5.3</span>  Lenguaje intermedio</a></li>
+  </ul></li>
+  <li><a href="#paradigmas-de-programación" id="toc-paradigmas-de-programación" class="nav-link" data-scroll-target="#paradigmas-de-programación"><span class="toc-section-number">2.6</span>  Paradigmas de programación</a>
+  <ul class="collapse">
+  <li><a href="#programación-orientado-a-objetos" id="toc-programación-orientado-a-objetos" class="nav-link" data-scroll-target="#programación-orientado-a-objetos"><span class="toc-section-number">2.6.1</span>  Programación Orientado a Objetos</a></li>
+  <li><a href="#programación-funcional" id="toc-programación-funcional" class="nav-link" data-scroll-target="#programación-funcional"><span class="toc-section-number">2.6.2</span>  Programación Funcional</a></li>
+  </ul></li>
+  <li><a href="#ambiente-de-trabajo-en-rstudio" id="toc-ambiente-de-trabajo-en-rstudio" class="nav-link" data-scroll-target="#ambiente-de-trabajo-en-rstudio"><span class="toc-section-number">2.7</span>  Ambiente de trabajo en RStudio</a></li>
+  <li><a href="#tipos-de-datos-en-r" id="toc-tipos-de-datos-en-r" class="nav-link" data-scroll-target="#tipos-de-datos-en-r"><span class="toc-section-number">2.8</span>  Tipos de datos en R</a></li>
+  <li><a href="#tipos-de-estructuras-de-datos" id="toc-tipos-de-estructuras-de-datos" class="nav-link" data-scroll-target="#tipos-de-estructuras-de-datos"><span class="toc-section-number">2.9</span>  Tipos de estructuras de datos</a></li>
+  <li><a href="#comience-a-codificar" id="toc-comience-a-codificar" class="nav-link" data-scroll-target="#comience-a-codificar"><span class="toc-section-number">2.10</span>  Comience a codificar</a>
+  <ul class="collapse">
+  <li><a href="#asignación-de-objetos" id="toc-asignación-de-objetos" class="nav-link" data-scroll-target="#asignación-de-objetos"><span class="toc-section-number">2.10.1</span>  Asignación de objetos</a></li>
+  </ul></li>
+  <li><a href="#conceptos-básicos-de-r" id="toc-conceptos-básicos-de-r" class="nav-link" data-scroll-target="#conceptos-básicos-de-r"><span class="toc-section-number">2.11</span>  Conceptos Básicos de R</a>
+  <ul class="collapse">
+  <li><a href="#vector" id="toc-vector" class="nav-link" data-scroll-target="#vector"><span class="toc-section-number">2.11.1</span>  Vector</a></li>
+  <li><a href="#factor" id="toc-factor" class="nav-link" data-scroll-target="#factor"><span class="toc-section-number">2.11.2</span>  Factor</a></li>
+  <li><a href="#matrix" id="toc-matrix" class="nav-link" data-scroll-target="#matrix"><span class="toc-section-number">2.11.3</span>  Matrix</a></li>
+  <li><a href="#data-frame" id="toc-data-frame" class="nav-link" data-scroll-target="#data-frame"><span class="toc-section-number">2.11.4</span>  Data Frame</a></li>
+  <li><a href="#listas" id="toc-listas" class="nav-link" data-scroll-target="#listas"><span class="toc-section-number">2.11.5</span>  Listas</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ryali93/rsernanp/edit/master/book/c01_introduccion.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ryali93/rsernanp/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/ryali93/rsernanp/blob/master/book/c01_introduccion.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducción a R</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="instalación-de-r-rstudio-y-rtools" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="instalación-de-r-rstudio-y-rtools"><span class="header-section-number">2.1</span> Instalación de R, RStudio y RTools</h2>
+<section id="r-y-rstudio" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="r-y-rstudio"><span class="header-section-number">2.1.1</span> R y RStudio</h3>
+<p style="text-align: justify;">
+</p><p>Primero deberá descargar e instalar R y luego RStudio.</p>
+<p><strong>Instalación de R</strong></p>
+<p>Para instalar R hay que bajar un fichero ejecutable de la página web del proyecto R: <a href="http://www.r-project.org/"><strong>http://www.r-project.org/</strong></a>. Actualmente (Mayo 2021), la versión más reciente de R para el entorno Windows es la 4.1.0 y el ejecutable de tamaño aproximadamente 86Mb tiene el nombre R-4.1.0-win.exe.</p>
+<p><strong>Instalación de RStudio</strong></p>
+<p>Para instalar RStudio nos dirigimos al enlace <a href="http://www.rstudio.org/" class="uri">http://www.rstudio.org/</a>,la versión en pruebas es gratuita.Una vez bajado este ejecutable, hay que ejecutarlo y seguir las instrucciones del programa de instalación.</p>
+<p></p>
+</section>
+<section id="rtools" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="rtools"><span class="header-section-number">2.1.2</span> RTools</h3>
+<p style="text-align: justify;">
+</p><p>Es un paquete de herramientas para construir paquetes de R. Esto es lo que desea para construir sus propios paquetes en Windows, o para construir R por sí mismo. A partir de <strong>R 4.0.0</strong> (lanzado en abril de 2020), R para Windows usa un paquete de cadena de herramientas llamado <u>rtools40</u>.</p>
+<p>Esta versión de <u>Rtools</u> incluye gcc 8.3.0 e introduce un nuevo sistema de compilación basado en <a href="https://www.msys2.org/"><strong>msys2</strong>`</a>, que facilita la compilación y el mantenimiento de R, así como las bibliotecas del sistema que necesitan los paquetes de R en Windows. Las compilaciones recientes de <strong>rtools40</strong> también contienen una cadena de herramientas adicional gcc-10 ucrt para probar paquetes de R y bibliotecas del sistema con las compilaciones ucrt experimentales de R-devel. Para obtener más información sobre estos temas, siga los enlaces al final de este documento.</p>
+<p></p>
+<p style="text-align: justify;">
+</p><p>Jeroen Ooms mantiene la versión actual de Rtools. El profesor Brian Ripley y Duncan Murdoch prepararon <a href="https://cran.r-project.org/bin/windows/Rtools/history.html"><strong>ediciones anteriores</strong></a>. El mejor lugar para informar errores es a través de la organización <a href="https://github.com/r-windows"><strong>r-windows</strong></a> en GitHub.</p>
+<p></p>
+</section>
+</section>
+<section id="qué-es-r" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="qué-es-r"><span class="header-section-number">2.2</span> ¿Qué es R?</h2>
+<p style="text-align: justify;">
+</p><p>R es un lenguaje de programación y entorno computacional dedicado a la estadística.</p>
+<p>Que proporciona un amplio abanico de herramientas estadísticas (modelos lineales y no lineales, tests estadísticos, análisis de series temporales, algoritmos de clasificación y agrupamiento,etc.)</p>
+<p>Permite definir funciones propias. De hecho, gran parte de las funciones de R están escritas en el mismo R, aunque para algoritmos computacionalmente exigentes es posible desarrollar bibliotecas en C, C++ o Fortran que se cargan dinámicamente</p>
+<p>R puede integrarse con distintas bases de datos y existen bibliotecas que facilitan su utilización desde lenguajes de programación interpretados como Python (PythonInR),hereda de S su orientación a objetos.</p>
+<p>Otra de las características de R es su capacidad gráfica, que permite generar gráficos con alta calidad (ggplot). R posee su propio formato para la documentación basado en LaTeX.</p>
+<p></p>
+<p align="center">
+</p><p><img src="https://cran.r-project.org/Rlogo.svg" width="300"></p>
+<p></p>
+</section>
+<section id="qué-es-rstudio" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="qué-es-rstudio"><span class="header-section-number">2.3</span> ¿Qué es RStudio?</h2>
+<p style="text-align: justify;">
+</p><p>RStudio es un editor para scripts disponible para usuarios de R en todos los sistemas operativos. Es considerado como un <u>entorno de desarrollo integrado (GUI)</u>que combina un interfaz muy intuitiva con herramientas de código muy potentes que permiten sacar el máximo provecho a R.</p>
+<p>La ventaja de este editor es que ofrece una serie de opciones no existentes en R, entre otras, por ejemplo, comprobar rápidamente que ningún paréntesis queda sin cerrarse o marcar, copiar y pegar columnas.</p>
+<p>Pero además nos da un listado de las variables y nos da una descripción de los bancos de datos que hemos introducido. También tiene una lista de los paquetes instalados y los gráficos realizados.</p>
+<p></p>
+<p align="center">
+</p><p><img src="fig/s01_rstudio_logo.png" width="400"></p>
+<p></p>
+</section>
+<section id="qué-otros-ides-existen-para-r" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="qué-otros-ides-existen-para-r"><span class="header-section-number">2.4</span> ¿Qué otros IDE’s existen para R?</h2>
+<ul>
+<li>Tinn-R</li>
+<li>RKward</li>
+<li>Rcommander</li>
+<li>Jupyter notebook</li>
+<li>Visual studio code</li>
+<li>Pycharm</li>
+<li>Eclipse</li>
+</ul>
+</section>
+<section id="tipos-de-lenguajes-de-programación" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="tipos-de-lenguajes-de-programación"><span class="header-section-number">2.5</span> Tipos de lenguajes de programación</h2>
+<section id="lenguaje-compilado" class="level3" data-number="2.5.1">
+<h3 data-number="2.5.1" class="anchored" data-anchor-id="lenguaje-compilado"><span class="header-section-number">2.5.1</span> Lenguaje compilado</h3>
+<p style="text-align: justify;">
+</p><p>Son aquellos lenguajes de alto nivel que como su nombre lo sugiere, requieren de un compilador (programa que traduce un lenguaje de alto nivel en código máquina o lenguaje máquina) para traducirlo y crear la parte ejecutable.</p>
+<p></p>
+<ul>
+<li>C++</li>
+<li>Go</li>
+</ul>
+</section>
+<section id="lenguaje-interpretado" class="level3" data-number="2.5.2">
+<h3 data-number="2.5.2" class="anchored" data-anchor-id="lenguaje-interpretado"><span class="header-section-number">2.5.2</span> Lenguaje interpretado</h3>
+<p style="text-align: justify;">
+</p><p>Son aquellos lenguajes de programación también de alto nivel en donde el código fuente debe ser traducido a un lenguaje que la máquina entienda y pueda realizar, no crean un archivo externo.</p>
+<p></p>
+<ul>
+<li>Ruby</li>
+<li>Javascript</li>
+<li>Python</li>
+<li>R</li>
+</ul>
+<p style="text-align: justify;">
+</p><p>Los lenguajes de alto nivel permiten escribir instrucciones en un idioma muy parecido al inglés así como hacer uso de notaciones matemáticas comunes.</p>
+<p></p>
+</section>
+<section id="lenguaje-intermedio" class="level3" data-number="2.5.3">
+<h3 data-number="2.5.3" class="anchored" data-anchor-id="lenguaje-intermedio"><span class="header-section-number">2.5.3</span> Lenguaje intermedio</h3>
+<p style="text-align: justify;">
+</p><p>Los lenguajes intermedios son compilados hacia programas intermedios y luego interpretados, esto permite que pueda ser ejecutado desde cualquier sistema operativo sin necesidad de crear ejecutables.</p>
+<p></p>
+<ul>
+<li>Java</li>
+<li>C#</li>
+</ul>
+<p align="center">
+</p><p><img src="fig/s01_tipos_lenguaje.png" width="600"></p>
+<p></p>
+</section>
+</section>
+<section id="paradigmas-de-programación" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="paradigmas-de-programación"><span class="header-section-number">2.6</span> Paradigmas de programación</h2>
+<p>Un paradigma de programación es una manera o estilo de programación de software. Se trata de un conjunto de métodos sistemáticos aplicables en todos los niveles del diseño de programas para resolver problemas computacionales.</p>
+<section id="programación-orientado-a-objetos" class="level3" data-number="2.6.1">
+<h3 data-number="2.6.1" class="anchored" data-anchor-id="programación-orientado-a-objetos"><span class="header-section-number">2.6.1</span> Programación Orientado a Objetos</h3>
+<p>Se construyen modelos de objetos que representan elementos (objetos) del problema a resolver, que tienen características y funciones. Permite separar los diferentes componentes de un programa, simplificando así su creación, depuración y posteriores mejoras. La programación orientada a objetos disminuye los errores y promociona la reutilización del código. Es una manera especial de programar, que se acerca de alguna manera a cómo expresaríamos las cosas en la vida real.</p>
+</section>
+<section id="programación-funcional" class="level3" data-number="2.6.2">
+<h3 data-number="2.6.2" class="anchored" data-anchor-id="programación-funcional"><span class="header-section-number">2.6.2</span> Programación Funcional</h3>
+<p>La programación funcional es un paradigma declarativo. Nos enfocaremos en “qué” estamos haciendo y no en “cómo” se está haciendo que sería el enfoque imperativo. Esto quiere decir que se expresa nuestra lógica sin describir controles de flujo, ni ciclos ni condicionales.</p>
+<p align="center">
+</p><p><img src="fig/s01_paradigmas.jpg" width="600"></p>
+<p></p>
+</section>
+</section>
+<section id="ambiente-de-trabajo-en-rstudio" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="ambiente-de-trabajo-en-rstudio"><span class="header-section-number">2.7</span> Ambiente de trabajo en RStudio</h2>
+<p style="text-align: justify;">
+</p><p>La interfaz gráfica de RStudio nos permite acceder a scripts, datos, encontrar ayuda y previsualizar gráficos y resultados.</p>
+<p></p>
+<p align="center">
+</p><p><img src="fig/s01_rstudio_ide.png" width="800"></p>
+<p></p>
+</section>
+<section id="tipos-de-datos-en-r" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="tipos-de-datos-en-r"><span class="header-section-number">2.8</span> Tipos de datos en R</h2>
+<p style="text-align: justify;">
+</p><p>R es capaz de manejar una variedad de tipos de datos, que se almacenan en diferentes estructuras como se puede observar en la siguiente tabla:</p>
+<p></p>
+<table class="table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 78%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Tipos de Datos</th>
+<th style="text-align: center;">Información</th>
+<th style="text-align: center;">Definición</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>Numeric</code></td>
+<td style="text-align: center;">Datos contenidos en el conjuntos de los números reales</td>
+<td style="text-align: center;"><code>num &lt;- 3.14</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Integer</code></td>
+<td style="text-align: center;">Datos contenidos en el conjuntos de los números enteros</td>
+<td style="text-align: center;"><code>int &lt;- 3L</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Character</code></td>
+<td style="text-align: center;">Datos que soportan cadenas de caracteres</td>
+<td style="text-align: center;"><code>chr &lt;- "hello world"</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Complex</code></td>
+<td style="text-align: center;">Datos que soportan números complejos</td>
+<td style="text-align: center;"><code>comp &lt;- 3+2i</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Logical</code></td>
+<td style="text-align: center;">Datos que sólo soportan valores lógicos de verdadero (T) o falso (F)</td>
+<td style="text-align: center;"><code>a &lt;- 1; b &lt;- 2; a &lt; b</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Factor</code></td>
+<td style="text-align: center;">Este no es estrictamente un tipo de dato, pero vale la pena describirlo aquí. Una variable factor es una variable categórica. Los vectores de caracteres a menudo se almacenan como factores para explotar funciones para tratar datos categóricos. Por ejemplo, en análisis de regresión</td>
+<td style="text-align: center;">Aplique <code>as.factor()</code> a un vector de caracteres o numéricos</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="tipos-de-estructuras-de-datos" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="tipos-de-estructuras-de-datos"><span class="header-section-number">2.9</span> Tipos de estructuras de datos</h2>
+<table class="table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 48%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Objetos</th>
+<th style="text-align: center;">Tipos</th>
+<th style="text-align: center;">¿Soporta varios tipos de datos en el mismo objeto?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>Vector</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo o lógico</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Factor</code></td>
+<td style="text-align: center;">Numérico o lógico</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Arreglo</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo o lógico</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>Matriz</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo o lógico</td>
+<td style="text-align: center;">No</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Data frame</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo o lógico</td>
+<td style="text-align: center;">Sí</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>ts</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo o lógico</td>
+<td style="text-align: center;">Sí</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>Lista</code></td>
+<td style="text-align: center;">Numérico, carácter, complejo, lógico, función, expresión, …</td>
+<td style="text-align: center;">Sí</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="comience-a-codificar" class="level2" data-number="2.10">
+<h2 data-number="2.10" class="anchored" data-anchor-id="comience-a-codificar"><span class="header-section-number">2.10</span> Comience a codificar</h2>
+<p style="text-align: justify;">
+</p><p>Comenzamos a codificar imprimiendo <code>Hello world</code>y posteriormente asignando valores a un objeto</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">"Hello world"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Hello world"</code></pre>
+</div>
+</div>
+<section id="asignación-de-objetos" class="level3" data-number="2.10.1">
+<h3 data-number="2.10.1" class="anchored" data-anchor-id="asignación-de-objetos"><span class="header-section-number">2.10.1</span> Asignación de objetos</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>obj <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">58</span>, <span class="dv">456</span>, <span class="dv">56</span>, <span class="dv">5</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>obj</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   5   2   6  58 456  56   5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">58</span>, <span class="dv">456</span>, <span class="dv">56</span>, <span class="dv">5</span>) <span class="ot">-&gt;</span> obj</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>obj</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]   5   2   6  58 456  56   5</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="conceptos-básicos-de-r" class="level2" data-number="2.11">
+<h2 data-number="2.11" class="anchored" data-anchor-id="conceptos-básicos-de-r"><span class="header-section-number">2.11</span> Conceptos Básicos de R</h2>
+<section id="vector" class="level3" data-number="2.11.1">
+<h3 data-number="2.11.1" class="anchored" data-anchor-id="vector"><span class="header-section-number">2.11.1</span> Vector</h3>
+<ul>
+<li>Es el elemento más básico en R.</li>
+<li>Contiene elementos de la misma clase (son atómicos).</li>
+<li>Se crea con la función c(), que significa ‘concatenar’ o ‘combinar’.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>vector01 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">7</span>, <span class="dv">10</span>, <span class="dv">11</span>, <span class="dv">12</span>, <span class="dv">19</span>, <span class="dv">26</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>vector01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  2  4  7 10 11 12 19 26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>vector02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"d"</span>, <span class="st">"g"</span>, <span class="st">"j"</span>, <span class="st">"k"</span>, <span class="st">"l"</span>, <span class="st">"s"</span>, <span class="st">"z"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>vector02</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "a" "b" "d" "g" "j" "k" "l" "s" "z"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>vector03 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"jorge"</span>, <span class="st">"roy"</span>, <span class="st">"daniel"</span>, <span class="st">"cesar"</span>, <span class="st">"patin"</span>, <span class="dv">254</span>, <span class="dv">265</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>vector03</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "jorge"  "roy"    "daniel" "cesar"  "patin"  "254"    "265"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>vector04 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">TRUE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>vector04</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE</code></pre>
+</div>
+</div>
+<p>Algunas operaciones con vectores</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># indexar vectores</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>vector01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  2  4  7 10 11 12 19 26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vector01[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluar la naturaleza del vector</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> vector01[<span class="dv">4</span>]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">is.vector</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.integer</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># operaciones con vectores</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(vector01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(vector01 <span class="sc">*</span> <span class="dv">2</span>) <span class="sc">+</span> <span class="dv">500</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 502 504 508 514 520 522 524 538 552</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(vector01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 92</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(vector01 <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000000 1.000000 1.732051 2.449490 3.000000 3.162278 3.316625 4.242641
+[9] 5.000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>vector01 <span class="sc">+</span> (vector01 <span class="sc">*</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  3  6 12 21 30 33 36 57 78</code></pre>
+</div>
+</div>
+</section>
+<section id="factor" class="level3" data-number="2.11.2">
+<h3 data-number="2.11.2" class="anchored" data-anchor-id="factor"><span class="header-section-number">2.11.2</span> Factor</h3>
+<p style="text-align: justify;">
+</p><p>En R, los factores se usan para trabajar con variables categóricas, es decir, variables que tienen un conjunto fijo y conocido de valores posibles. También son útiles cuando quieres mostrar vectores de caracteres en un orden no alfabético.</p>
+<p></p>
+<p style="text-align: justify;">
+</p><p>Históricamente, los factores eran más sencillos de trabajar que los caracteres. Como resultado, muchas de las funciones de R base automáticamente convierten los caracteres a factores. Esto significa que, a menudo, los factores aparecen en lugares donde no son realmente útiles. Afortunadamente, no tienes que preocuparte de eso con <strong>tidyverse</strong> y puedes concentrarte en situaciones en las que los factores son genuinamente útiles.</p>
+<p></p>
+<p style="text-align: justify;">
+</p><p>Si quieres aprender más sobre factores, te recomendamos leer el artículo de Amelia McNamara y Nicholas Horton, <a href="https://peerj.com/preprints/3163/"><strong>Wrangling categorical data in R</strong></a> (el nombre significa Domando/Manejando Datos Categóricos en R). Este artículo cuenta parte de la historia discutida en <a href="https://simplystatistics.org/2015/07/24/stringsasfactors-an-unauthorized-biography/"><strong>stringsAsFactors: An unauthorized biography</strong></a> (del inglés cadenasComoFactores: Una Biografía No Autorizada) y <a href="https://notstatschat.tumblr.com/post/124987394001/stringsasfactors-sigh"><strong>stringsAsFactors =</strong> <sigh></sigh></a> (del inglés cadenasComoFactores = <suspiro>), y compara las propuestas tidy para los datos categóricos demostrados en este libro, en comparación a los métodos de R base. Una versión temprana de este artículo ayudó a motivar y definir el alcance del paquete forcats. ¡Gracias Amelia y Nick!</suspiro></p>
+<p></p>
+<p>Imagina que tienes una variable que registra meses:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>vect01 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dec"</span>, <span class="st">"Apr"</span>, <span class="st">"Jan"</span>, <span class="st">"Mar"</span>, <span class="st">"Jan"</span>, <span class="st">"Mar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Usar una cadena de caracteres (o string, en inglés) para guardar esta variable tiene dos problemas:</p>
+<ol type="1">
+<li>Solo hay doce meses posibles y no hay nada que te resguarde de errores de tipeo:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>vect02 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dec"</span>, <span class="st">"Apr"</span>, <span class="st">"Jam"</span>, <span class="st">"Mar"</span>, <span class="st">"Jan"</span>, <span class="st">"Mar"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>No se ordena de una forma útil:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(vect02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Apr" "Dec" "Jam" "Jan" "Mar" "Mar"</code></pre>
+</div>
+</div>
+<p>Puedes solucionar ambos problemas con un <code>factor</code>. Para crearlo, debes empezar definiendo una lista con los niveles válidos:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>month_levels <span class="ot">&lt;-</span> month.abb</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora puedes crear un factor:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>factor01 <span class="ot">&lt;-</span> <span class="fu">factor</span>(vect01, <span class="at">levels =</span> month_levels)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>factor01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec Apr Jan Mar Jan Mar
+Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(factor01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Jan Jan Mar Mar Apr Dec
+Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</code></pre>
+</div>
+</div>
+<p>Cualquier valor no fijado en el conjunto será convertido a <code>NA</code> de forma silenciosa:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>factor02 <span class="ot">&lt;-</span> <span class="fu">factor</span>(vect02, <span class="at">levels =</span> month_levels)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>factor02</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec  Apr  &lt;NA&gt; Mar  Jan  Mar 
+Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</code></pre>
+</div>
+</div>
+<p>Si quieres una advertencia, puedes usar readr::parse_factor() (segmentar un factor, en inglés):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">parse_factor</span>(vect02, <span class="at">levels =</span> month_levels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: 1 parsing failure.
+row col           expected actual
+  3  -- value in level set    Jam</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec  Apr  &lt;NA&gt; Mar  Jan  Mar 
+attr(,"problems")
+# A tibble: 1 × 4
+    row   col expected           actual
+  &lt;int&gt; &lt;int&gt; &lt;chr&gt;              &lt;chr&gt; 
+1     3    NA value in level set Jam   
+Levels: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec</code></pre>
+</div>
+</div>
+<p>Si omites los niveles, se van a definir a partir de los datos en orden alfabético:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(vect01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec Apr Jan Mar Jan Mar
+Levels: Apr Dec Jan Mar</code></pre>
+</div>
+</div>
+<p>A veces es preferible que el orden de los niveles se corresponda con su primera aparición en los datos. Puedes hacer esto cuando creas el factor, al definir los niveles con <code>unique(x)</code> o después con <code>fct_inorder()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">factor</span>(vect01, <span class="at">levels =</span> <span class="fu">unique</span>(vect01))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec Apr Jan Mar Jan Mar
+Levels: Dec Apr Jan Mar</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(<span class="fu">factor</span>(vect01))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] Dec Apr Jan Mar Jan Mar
+Levels: Dec Apr Jan Mar</code></pre>
+</div>
+</div>
+</section>
+<section id="matrix" class="level3" data-number="2.11.3">
+<h3 data-number="2.11.3" class="anchored" data-anchor-id="matrix"><span class="header-section-number">2.11.3</span> Matrix</h3>
+<p style="text-align: justify;">
+</p><p>Una matriz es una <code>estructura bidimensional</code>. Las filas son horizontales y las columnas son verticales. <code>Una matriz de 4 por 3 (4 x 3), por ejemplo, tiene 4 filas y 3 columnas</code>. Las matrices se crean comúnmente usando tablas de datos numéricos como las de una hoja de cálculo de <code>Excel</code> o un archivo <code>csv</code>.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>vector01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1  2  4  7 10 11 12 19 26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(vector01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<p>Dado que la variable es un vector, no tiene un atributo <code>dim</code> (entonces es simplemente NULL).</p>
+<p>¿Qué ocurre si le damos a <code>vector01</code> un atributo <code>dim</code>?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(vector01) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>vector01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    7   12
+[2,]    2   10   19
+[3,]    4   11   26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(vector01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "matrix" "array" </code></pre>
+</div>
+</div>
+<p style="text-align: justify;">
+</p><p>El ejemplo que utilizamos hasta ahora tenía la intención de ilustrar la idea de que una matriz es simplemente un vector con un atributo de dimensión.</p>
+<p></p>
+<p>Un método más directo para crear la misma matriz utiliza la función matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>matrix01 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(vector01, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>matrix01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    1    2    4
+[2,]    7   10   11
+[3,]   12   19   26</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>arboles <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Tipuana tipu"</span>, <span class="st">"Myrsine andina"</span>, <span class="st">"Salix humboldtiana"</span>)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>matrix02 <span class="ot">&lt;-</span> <span class="fu">cbind</span>(arboles, matrix01) <span class="co"># column bind o juntar por columna.</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>matrix02</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     arboles                            
+[1,] "Tipuana tipu"       "1"  "2"  "4" 
+[2,] "Myrsine andina"     "7"  "10" "11"
+[3,] "Salix humboldtiana" "12" "19" "26"</code></pre>
+</div>
+</div>
+<p style="text-align: justify;">
+</p><p>Esto se llama <strong>coerción implícita</strong> porque no lo hemos pedido. Solo sucedió. Sin embargo, todavía se desea trabajar con diferentes tipos de datos.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(matrix02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "matrix" "array" </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(matrix02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 4</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(matrix02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(matrix02)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "arboles" ""        ""        ""       </code></pre>
+</div>
+</div>
+</section>
+<section id="data-frame" class="level3" data-number="2.11.4">
+<h3 data-number="2.11.4" class="anchored" data-anchor-id="data-frame"><span class="header-section-number">2.11.4</span> Data Frame</h3>
+<p style="text-align: justify;">
+</p><p>Un data frame es una estructura de datos bidimensional similar a una matriz, pero funciona de manera muy diferente. Si bien un data frame parece una tabla simple, de hecho es una lista de vectores de la misma longitud. Para los nuevos usuarios de R, las matrices y los data frames parecen similares. La principal diferencia es que un data frame permite tipos de datos mixtos (por ejemplo, numérico, lógico, caracter). Esto les permite almacenar diferentes tipos de variables, lo cual es muy útil en el análisis estadístico. Por ejemplo, en un análisis de regresión. Las matrices se usan principalmente para almacenar datos numéricos, y se pueden usar para álgebra matricial.</p>
+<p></p>
+<p style="text-align: justify;">
+</p><p>Matrices y Data Frames, ambos representan tipos de datos <strong>rectangulares</strong>, lo que significa que se usan para almacenar datos tabulares, con filas y columnas.</p>
+<p></p>
+<p style="text-align: justify;">
+</p><p>La principal diferencia, es que las <strong>matrices</strong> solo pueden contener una única clase de datos (al igual que los vectores), mientras que los <strong>dataframes</strong> pueden consistir de muchas clases diferentes de datos.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a> <span class="co"># se crea un data frame (df)</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>df01 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(arboles, matrix01)</span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>df01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             arboles X1 X2 X3
+1       Tipuana tipu  1  2  4
+2     Myrsine andina  7 10 11
+3 Salix humboldtiana 12 19 26</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df01)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># podemos cambiar el nombre a las variables (columnas)</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df01) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"nombre_cientifico"</span>, <span class="st">"circunferencia"</span>, <span class="st">"diametro_copa"</span>, <span class="st">"altura"</span> )</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>df01</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   nombre_cientifico circunferencia diametro_copa altura
+1       Tipuana tipu              1             2      4
+2     Myrsine andina              7            10     11
+3 Salix humboldtiana             12            19     26</code></pre>
+</div>
+</div>
+<section id="conjunto-de-datos-en-r" class="level4" data-number="2.11.4.1">
+<h4 data-number="2.11.4.1" class="anchored" data-anchor-id="conjunto-de-datos-en-r"><span class="header-section-number">2.11.4.1</span> Conjunto de datos en R</h4>
+<p style="text-align: justify;">
+</p><p>Varios conjuntos de datos tabulados o datasets se icluyen en la instalación de R (en el paquete datasets) y por defecto se ecuentran cargados para su uso. la funcion <code>data()</code> lista todos los <code>datasets de R</code>.</p>
+<p></p>
+<p>Trabajemos con el dataset <code>iris</code> <strong>(Edgar Anderson’s Iris Data)</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(iris)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   150 obs. of  5 variables:
+ $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+ $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+ $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+ $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+ $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># todas las observaciones de la columna 'Species'</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>iris[, <span class="st">"Species"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] setosa     setosa     setosa     setosa     setosa     setosa    
+  [7] setosa     setosa     setosa     setosa     setosa     setosa    
+ [13] setosa     setosa     setosa     setosa     setosa     setosa    
+ [19] setosa     setosa     setosa     setosa     setosa     setosa    
+ [25] setosa     setosa     setosa     setosa     setosa     setosa    
+ [31] setosa     setosa     setosa     setosa     setosa     setosa    
+ [37] setosa     setosa     setosa     setosa     setosa     setosa    
+ [43] setosa     setosa     setosa     setosa     setosa     setosa    
+ [49] setosa     setosa     versicolor versicolor versicolor versicolor
+ [55] versicolor versicolor versicolor versicolor versicolor versicolor
+ [61] versicolor versicolor versicolor versicolor versicolor versicolor
+ [67] versicolor versicolor versicolor versicolor versicolor versicolor
+ [73] versicolor versicolor versicolor versicolor versicolor versicolor
+ [79] versicolor versicolor versicolor versicolor versicolor versicolor
+ [85] versicolor versicolor versicolor versicolor versicolor versicolor
+ [91] versicolor versicolor versicolor versicolor versicolor versicolor
+ [97] versicolor versicolor versicolor versicolor virginica  virginica 
+[103] virginica  virginica  virginica  virginica  virginica  virginica 
+[109] virginica  virginica  virginica  virginica  virginica  virginica 
+[115] virginica  virginica  virginica  virginica  virginica  virginica 
+[121] virginica  virginica  virginica  virginica  virginica  virginica 
+[127] virginica  virginica  virginica  virginica  virginica  virginica 
+[133] virginica  virginica  virginica  virginica  virginica  virginica 
+[139] virginica  virginica  virginica  virginica  virginica  virginica 
+[145] virginica  virginica  virginica  virginica  virginica  virginica 
+Levels: setosa versicolor virginica</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Se utiliza el caracter ‘$’ para acceder a los campos o columnas.</span></span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>iris<span class="sc">$</span>Species</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] setosa     setosa     setosa     setosa     setosa     setosa    
+  [7] setosa     setosa     setosa     setosa     setosa     setosa    
+ [13] setosa     setosa     setosa     setosa     setosa     setosa    
+ [19] setosa     setosa     setosa     setosa     setosa     setosa    
+ [25] setosa     setosa     setosa     setosa     setosa     setosa    
+ [31] setosa     setosa     setosa     setosa     setosa     setosa    
+ [37] setosa     setosa     setosa     setosa     setosa     setosa    
+ [43] setosa     setosa     setosa     setosa     setosa     setosa    
+ [49] setosa     setosa     versicolor versicolor versicolor versicolor
+ [55] versicolor versicolor versicolor versicolor versicolor versicolor
+ [61] versicolor versicolor versicolor versicolor versicolor versicolor
+ [67] versicolor versicolor versicolor versicolor versicolor versicolor
+ [73] versicolor versicolor versicolor versicolor versicolor versicolor
+ [79] versicolor versicolor versicolor versicolor versicolor versicolor
+ [85] versicolor versicolor versicolor versicolor versicolor versicolor
+ [91] versicolor versicolor versicolor versicolor versicolor versicolor
+ [97] versicolor versicolor versicolor versicolor virginica  virginica 
+[103] virginica  virginica  virginica  virginica  virginica  virginica 
+[109] virginica  virginica  virginica  virginica  virginica  virginica 
+[115] virginica  virginica  virginica  virginica  virginica  virginica 
+[121] virginica  virginica  virginica  virginica  virginica  virginica 
+[127] virginica  virginica  virginica  virginica  virginica  virginica 
+[133] virginica  virginica  virginica  virginica  virginica  virginica 
+[139] virginica  virginica  virginica  virginica  virginica  virginica 
+[145] virginica  virginica  virginica  virginica  virginica  virginica 
+Levels: setosa versicolor virginica</code></pre>
+</div>
+</div>
+<p>Cuando queremos extraer datos del data frame según una condicion, esto se complica.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris[iris<span class="sc">$</span>Species <span class="sc">==</span> <span class="st">"setosa"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa</code></pre>
+</div>
+</div>
+<p style="text-align: justify;">
+</p><p>Así mismo, si se desea obtener las observaciones donde el ancho del sépalo sea menor o igual a 3 y la especie sea “setosa”.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris[iris[, <span class="st">"Sepal.Width"</span>] <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">&amp;</span> iris[, <span class="st">"Species"</span>] <span class="sc">==</span> <span class="st">"setosa"</span>, ])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+2           4.9         3.0          1.4         0.2  setosa
+9           4.4         2.9          1.4         0.2  setosa
+13          4.8         3.0          1.4         0.1  setosa
+14          4.3         3.0          1.1         0.1  setosa
+26          5.0         3.0          1.6         0.2  setosa
+39          4.4         3.0          1.3         0.2  setosa</code></pre>
+</div>
+</div>
+</section>
+<section id="subsetting" class="level4" data-number="2.11.4.2">
+<h4 data-number="2.11.4.2" class="anchored" data-anchor-id="subsetting"><span class="header-section-number">2.11.4.2</span> Subsetting</h4>
+<p>La función <code>subset</code> nos facilita filtrar datos cuando queremos que se cumplan ciertas condiciones.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">subset</span>(iris, Sepal.Width <span class="sc">&lt;=</span> <span class="dv">3</span> <span class="sc">&amp;</span> Species <span class="sc">==</span> <span class="st">"setosa"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+2           4.9         3.0          1.4         0.2  setosa
+9           4.4         2.9          1.4         0.2  setosa
+13          4.8         3.0          1.4         0.1  setosa
+14          4.3         3.0          1.1         0.1  setosa
+26          5.0         3.0          1.6         0.2  setosa
+39          4.4         3.0          1.3         0.2  setosa
+42          4.5         2.3          1.3         0.3  setosa
+46          4.8         3.0          1.4         0.3  setosa</code></pre>
+</div>
+</div>
+<p><strong>¿Pero es la mejor opción?</strong> <strong>¿Cómo ordeno?</strong> <strong>¿Cómo cambio de un formato “ancho” a un formato “largo” (o viceversa)? etc.</strong></p>
+<p>La tendencia en la comunidad R para el tratamiento de datos, comprende el uso de <a href="https://www.tidyverse.org/"><u><strong>tidyverse</strong></u></a>.</p>
+</section>
+</section>
+<section id="listas" class="level3" data-number="2.11.5">
+<h3 data-number="2.11.5" class="anchored" data-anchor-id="listas"><span class="header-section-number">2.11.5</span> Listas</h3>
+<p style="text-align: justify;">
+</p><p>A diferencia de un vector, una lista es una colección de elementos que pueden ser de diferente tipo. Los componentes de una lista son típicamente pares <strong>clave-valor (key-value)</strong>. El siguiente ejemplo muestra cómo se puede almacenar un punto (con coordenas) en una lista.</p>
+<p></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Los elementos de la lista generalmente se acceden por nombre</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>coordenadas <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">y =</span> <span class="dv">15</span>)</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a>coordenadas</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$x
+[1] 10
+
+$y
+[1] 15</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>point <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">id =</span> <span class="dv">123</span>, <span class="at">coord =</span> coordenadas, <span class="at">spatial.reference =</span> <span class="st">"WGS_84"</span>)</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>point</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$id
+[1] 123
+
+$coord
+$coord$x
+[1] 10
+
+$coord$y
+[1] 15
+
+
+$spatial.reference
+[1] "WGS_84"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a>point<span class="sc">$</span>id</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 123</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb99"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb99-1"><a href="#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># También podemos acceder a sus elementos de la siguiente manera</span></span>
+<span id="cb99-2"><a href="#cb99-2" aria-hidden="true" tabindex="-1"></a>point[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$id
+[1] 123</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb101"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb101-1"><a href="#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(point[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "list"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb103"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb103-1"><a href="#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Para obtener el valor del elemento de la lista, use corchetes dobles</span></span>
+<span id="cb103-2"><a href="#cb103-2" aria-hidden="true" tabindex="-1"></a>point[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 123</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb105"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb105-1"><a href="#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(point[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "numeric"</code></pre>
+</div>
+</div>
+<p style="text-align: justify;">
+</p><p>La lista, en el ejemplo, tiene tres elementos de diferentes tipos de datos. <code>id</code> es numérico, <code>coord</code> es otra lista y <code>spatial.reference</code> es una cadena de caracteres. La lista <code>coord</code> contiene dos elementos numéricos, <code>x</code> e <code>y</code>. Generalmente, se accede a los elementos de la lista usando su nombre, en lugar de número. En particular, muchas estructuras de datos tienen elementos con nombre a los que se puede acceder utilizando los operadores <code>$</code> o <code>@</code>.</p>
+<p></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./c02_parte1.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Conceptos Básicos de R - Parte 2</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright (c) | Powered by <a href="https://quarto.org/">Quarto</a> <!--?quarto.version?--></div>   
+  </div>
+</footer>
+
+
+
+</body></html>

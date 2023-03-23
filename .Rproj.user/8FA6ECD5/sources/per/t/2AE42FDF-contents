@@ -1,0 +1,154 @@
+# Conceptos Básicos de R - Parte 2
+
+## Lectura / escritura de datos (.csv, .xlsx, .RData, .rds)
+
+<p style="text-align: justify;">
+
+En la pestaña en Entorno **(Environment)** de **RStudio** podemos importar conjuntos de datos o datasets con el asistente de importación. No es recomendable cuando debemos importar varios archivos o si se van a leer archivos grandes. Para lo cual es más eficiente usar código.
+
+</p>
+
+<p align="center">
+
+<img src="https://bookdown.org/chescosalgado/intro_r/img/manual_import.png
+" width="600"/>
+
+</p>
+
+### CSV
+
+Si conocemos la estructura de nuestros datos (por ejemplo, la primera fila es el título de las columnas o es un archivo separado por comas), Se pueden utilizar las funciones **`read.csv` (librería base) o `read_csv` (librería readr, de tidyverse)**:
+
+```{r}
+# datos será un 'data frame'
+data01 <- read.csv(file = 'data/file.csv')
+head(data01)
+# datos será un 'tibble'
+data01 <- readr::read_csv(file = 'data/file.csv')
+data01
+```
+
+En otros casos, cuando `";"` es utilizado como el separador de campo y `","` para el punto decimal, se utiliza una variante de estas funciones.
+
+```{r}
+# datos será un 'data frame'
+data02 <- read.csv(file = 'data/file.csv', sep = ',', header = T)
+```
+
+La escritura de datos se realiza de la siguiente manera:
+
+```{r}
+readr::write_csv(x = data02, file = "data/csv_data.csv")
+```
+
+### EXCEL
+
+Es posible leer datos en la forma `.xls` o `.xlsx`. Existen distintos paquetes que nos permiten hacerlo:
+
+-   El paquete **readxl** contiene la función `read_excel`.
+-   El paquete **xlsx** y la función `read.xlsx`
+
+```{r}
+# datos será un 'data frame'
+data03 <- readxl::read_xls(path = "data/file.xls", sheet = 1)
+data03 <- xlsx::read.xlsx(file = "data/file.xls", 1)
+```
+
+La escritura de datos se realiza de la siguiente manera:
+
+```{r}
+xlsx::write.xlsx(
+  data03, "data/xlsx_data.xlsx", sheetName = "Sheet1", 
+  col.names = TRUE, row.names = TRUE, append = FALSE
+)
+```
+
+### RDS
+
+R proporciona dos formatos de archivo propios para almacenar datos, **.RDS** y **.RData** . Los archivos **RDS** pueden almacenar **un solo objeto R** y los archivos **RData** pueden almacenar **varios objetos R**.
+
+Puede abrir un archivo RDS con `readRDS`:
+
+```{r}
+data04 <- readRDS("data/file.RDS")
+```
+
+La escritura de datos se realiza de la siguiente manera:
+
+```{r}
+saveRDS(data04, file = "data/rds_data.RDS")
+```
+
+### RDATA
+
+La escritura de estos datos se realiza de la siguiente manera:
+
+```{r}
+a <- 1
+b <- 2
+c <- 3
+save(a, b, c, file = "data/stuff.RData")
+```
+
+Puede abrir un archivo RData con `load`:
+
+```{r}
+load("data/stuff.RData")
+```
+
+## Control de Flujo Condicionales
+
+## Control de Flujo de Iteradores
+
+## Funciones
+
+## Paquetes y librerías
+
+Los paquetes de R amplían la funcionalidad de R al proporcionar funciones, datos y documentación adicionales.Están escritos por una comunidad mundial de usuarios de R y pueden ser instalados desde la interfaz gráfica de RStudio
+
+Solo tienes que instalar el paquete una vez, si desea actualizar un paquete previamente instalado a una versión más nueva, puede ir a la ventana de Ficheros en Packages \> Update y seleccionar los paquetes que desea actualizar.
+
+<p style="text-align: justify;">
+
+No podrá utilizar las funciones, los objetos y los archivos de ayuda de un paquete hasta que lo cargue con **`library()`**. Una vez que haya instalado un paquete, puede cargarlo con la función **`library()`**:
+
+</p>
+
+```{r include=FALSE}
+pacman::p_unload(
+  pacman::p_loaded(),
+  character.only = TRUE
+)
+```
+
+### Diferencias entre paquetes y librerías
+
+En el caso de la función `library()`, en muchas ocasiones existe la confusión entre un paquete y una librería, y podemos encontrarnos con gente llamando "librerías" a los paquetes.
+
+Una cosa es la función `library()` usada para cargar un paquete, y que se refiere al lugar en dónde el paquete es localizado, habitualmente una carpeta en nuestro ordenador, y otra un paquete que es una colección de funciones y datos empaquetados de forma conveniente.
+
+Dicho de otra manera, y en palabras de Hadley Wickham, científico de datos en RStudio, y creador de la gran mayoría de paquetes del ecosistema tidyverse:
+
+<p align="center">
+
+<img src="fig/s01_difference_library.png" width="400"/>
+
+</p>
+
+De igual manera, para recordar la diferencia es ejecutar la función library() sin argumentos. Esto nos proporcionará una lista de paquetes instalados en diferentes librerías en nuestro ordenador.
+
+```{r eval=FALSE}
+# Install packages
+install.packages("tidyverse")
+# Load packages
+library(tidyverse)
+# You can also use "pacman" package to install
+#  an loading other packages
+if (!require("pacman")) {
+  install.packages("pacman")
+}
+pacman::p_load(
+  tidyverse, formatR, knitr, rmdformats, pander, labelled, readxl, magrittr, kableExtra,
+  Lahman, datos
+)
+```

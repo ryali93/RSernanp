@@ -1,0 +1,26 @@
+{
+  "index.qmd": {
+    "index.html": "60c258fb"
+  },
+  "about.qmd": {
+    "about.html": "b7cfa429"
+  },
+  "header.qmd": {
+    "header.html": "7c831a1e"
+  },
+  "header_right.qmd": {
+    "header_right.html": "9b6e531a"
+  },
+  "header_left.qmd": {
+    "header_left.html": "28eeacbe"
+  },
+  "c01_introduccion.qmd": {
+    "c01_introduccion.html": "729bd9a0"
+  },
+  "c02_parte1.qmd": {
+    "c02_parte1.html": "38a12d77"
+  },
+  "c03_parte2.qmd": {
+    "c03_parte2.html": "6d4da80a"
+  }
+}
