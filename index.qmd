@@ -1,7 +1,5 @@
-This is a Quarto website.
+# Presentación
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+El SERNANP brinda el servicio de mantener áreas protegidas en buen estado de conservación para asegurar la provisión de servicios ambientales que generen bienestar a poblaciones. Uno de los pilares para alcanzar dicha eficiencia es gestionar la información espacial generada en el interior de las áreas, así como información externa de aliados estratégicos y demás instiuciones que contribuyen al desarrollo del medio ambiente.
 
-```{r}
-1 + 1
-```
+Este taller tiene el objetivo de servir como herramienta para la gestión de información y pueda ser insumo para la toma de decisiones que lleven a implementar acciones con el fin de contribuir con el mantenimiento del buen estado de conservación de las ANP.

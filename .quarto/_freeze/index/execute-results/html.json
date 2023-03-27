@@ -1,8 +1,10 @@
 {
-  "hash": "808ac808c3a4400a0f63e28d86bf1a45",
+  "hash": "1dc5133e8176b0b249e27a8bd2540cbe",
   "result": {
-    "markdown": "This is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n",
-    "supporting": [],
+    "markdown": "This is a Quarto website.\n\nTo learn more about Quarto websites visit <https://quarto.org/docs/websites>.\n\n\n::: {.cell}\n\n```{.r .cell-code}\n1 + 1\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 2\n```\n:::\n:::\n\n\nEl SERNANP brinda el servicio de mantener áreas protegidas en buen estado de conservación para asegurar la provisión de servicios ambientales que generen bienestar a poblaciones. Uno de los elementos básicos para alcanzar dicha eficiencia es contar con información de la deforestación en las ANP del SINANPE que permita ser un insumo para la toma de decisiones que lleven a implementar acciones en la gestión a fin de contribuir con el mantenimiento del buen estado de conservación de las ANP.",
+    "supporting": [
+      "index_files"
+    ],
     "filters": [
       "rmarkdown/pagebreak.lua"
     ],

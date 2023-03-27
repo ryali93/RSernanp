@@ -1,0 +1,179 @@
+# Control de Flujo y funciones
+## Control de Flujo Condicionales
+
+La toma de decisiones es una parte importante de la programación. Esto se puede lograr en la programación R usando la nomenclatura condicional **if**  **else**.
+
+### If
+
+```{r eval=FALSE}
+if (expresion) {
+  declaracion
+}
+```
+
+- Si **expresion** es **TRUE**, la instrucción se ejecuta. Pero si es **FALSO**, no pasa nada.
+- Aquí, **expresion** puede ser un vector lógico o numérico, pero solo se tiene en cuenta el primer elemento.
+- En el caso del vector numérico, cero se toma como **FALSO**, el resto como **VERDADERO**.
+
+### If...Else
+
+```{r eval=FALSE}
+if (expresion) {
+    declaracion1
+  }else{
+    declaracion2
+}
+```
+
+La parte **else** es opcional y solo se evalúa si **expresion** es **FALSE**.
+Es importante tener en cuenta que **else** debe estar en la misma línea que las llaves de cierre de la instrucción if.
+
+```{r eval=FALSE}
+x <- 0
+if (x < 0) {
+  print("Numero negativo")
+}else if (x > 0) {
+  print("Numero positivo")
+} else {
+  print("Cero")
+}
+```
+
+```{python eval=FALSE}
+temp = [15, 22, 30]
+suelo= ["seco", "humedo", "charcos"]
+valtemp = temp[0]
+valsuelo= suelo[2]
+if 12<= valtemp < 22 and valsuelo =="seco": 
+    print("Cielo despejado")
+    
+elif valtemp == 22 or valsuelo == "humedo":
+    print("lluvia leve")
+    
+elif valtemp > 22 and valsuelo=="charcos":
+      print("lluvia severa")
+    
+else: print(" Faltan datos")
+```
+
+```{r eval=FALSE}
+temp <- c(15, 22, 30)
+suelo <- c("seco", "humedo", "charcos")
+valtemp <- temp[1]
+valsuelo <- suelo[3]
+if (valtemp %in% 12:22 & valsuelo =="seco") {
+  print("\nCielo despejado")
+} else if (valtemp == 22 | valsuelo == "humedo"){
+  print("\nlluvia leve")
+} else if (valtemp > 22 & valsuelo=="charcos"){
+  print("\nlluvia severa")
+} else {
+  print("\nFaltan datos")
+  }
+```
+
+## Control de Flujo de Iteradores
+
+Los bucles son una de las estructuras fundamentales en la programación. Los bucles permiten iterar sobre cada elemento en una secuencia, uno a la vez, y hacer algo con esos elementos.
+
+### FOR 
+
+Un bucle **for** es muy valioso cuando necesitamos iterar sobre una lista de elementos o un rango de números. Loop se puede usar para iterar sobre una lista, marco de datos, vector, matriz o cualquier otro objeto. Los tirantes y el corchete son obligatorios.
+
+```{r eval=FALSE}
+for (valor in secuencia)
+  {
+    cuerpo
+  }
+```
+
+```{r}
+# Creando un vector de frutas
+frutas <- c('Apple', 'Orange', 'Passion fruit', 'Banana')
+# Declarando el bucle for
+for ( i in frutas){ 
+ print(i)
+}
+```
+
+### WHILE
+
+Un bucle es una declaración que continúa ejecutándose **mientras** se cumple una condición. La sintaxis para un ciclo while es la siguiente:
+
+```{r eval=FALSE}
+while (condición)
+  {
+    cuerpo
+  }
+```
+
+```{r}
+# creando la expresión con valor 1
+inicio <- 1
+# Creando el loop
+while (inicio <= 5){
+  # Ver donde estamos
+  cat('Este es el ciclo número ', inicio)
+  # Agregar 1 a la variable inicio despues de cada iteracion
+  inicio <- inicio + 1
+  print(inicio)
+}
+```
+
+**Otros iteradores**
+
+- repeat
+- do-while (*otros leguajes)
+
+Control de flujo
+* break, next
+
+
+## Funciones
+
+## Paquetes y librerías
+
+Los paquetes de R amplían la funcionalidad de R al proporcionar funciones, datos y documentación adicionales.Están escritos por una comunidad mundial de usuarios de R y pueden ser instalados desde la interfaz gráfica de RStudio
+
+Solo tienes que instalar el paquete una vez, si desea actualizar un paquete previamente instalado a una versión más nueva, puede ir a la ventana de Ficheros en Packages \> Update y seleccionar los paquetes que desea actualizar.
+
+<p style="text-align: justify;">
+
+No podrá utilizar las funciones, los objetos y los archivos de ayuda de un paquete hasta que lo cargue con **`library()`**. Una vez que haya instalado un paquete, puede cargarlo con la función **`library()`**:
+
+</p>
+
+```{r include=FALSE}
+pacman::p_unload(
+  pacman::p_loaded(),
+  character.only = TRUE
+)
+```
+
+### Diferencias entre paquetes y librerías
+
+En el caso de la función `library()`, en muchas ocasiones existe la confusión entre un paquete y una librería, y podemos encontrarnos con gente llamando "librerías" a los paquetes.
+
+Una cosa es la función `library()` usada para cargar un paquete, y que se refiere al lugar en dónde el paquete es localizado, habitualmente una carpeta en nuestro ordenador, y otra un paquete que es una colección de funciones y datos empaquetados de forma conveniente.
+
+Dicho de otra manera, y en palabras de Hadley Wickham, científico de datos en RStudio, y creador de la gran mayoría de paquetes del ecosistema tidyverse:
+
+<img src="fig/s01_difference_library.png" width="400"/>
+
+De igual manera, para recordar la diferencia es ejecutar la función library() sin argumentos. Esto nos proporcionará una lista de paquetes instalados en diferentes librerías en nuestro ordenador.
+
+```{r eval=FALSE}
+# Install packages
+install.packages("tidyverse")
+# Load packages
+library(tidyverse)
+# You can also use "pacman" package to install
+#  an loading other packages
+if (!require("pacman")) {
+  install.packages("pacman")
+}
+pacman::p_load(
+  tidyverse, formatR, knitr, rmdformats, pander, labelled, readxl, magrittr, kableExtra,
+  Lahman, datos
+)
+```

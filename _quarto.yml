@@ -2,10 +2,10 @@ project:
   type: book
 
 book:
-  title: "Curso taller de R - SERNANP"
+  title: "Taller de programación R - SERNANP"
   author: "Roy Yali"
   favicon: https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png
-  description: A side-by-side comparison of the Polars and Pandas libraries.
+  description: Taller de programación en el lenguaje de programación R para servidores de SERNANP.
   keyword: polars, pandas, python, dataframe, performance, data science, data engineering
   url: https://ryali93.github.io/rsernanp/
   navbar: 
@@ -24,9 +24,9 @@ book:
   sharing: [twitter, facebook, linkedin]
   image: polar-bear-airpods-no-background.png
   open-graph:
-    image: https://github.com/kevinheavey/modern-polars/raw/master/book/resized-og-polar-bear-airpods-no-background.png
+    image: https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png
     description: A side-by-side comparison of the Polars and Pandas libraries.
-
+      
   page-footer:
     left: "Copyright (c) | Powered by [Quarto](https://quarto.org/) <?quarto.version?>"
     background: "#738347"
@@ -34,13 +34,15 @@ book:
   chapters:
     - index.qmd
     - c01_introduccion.qmd
-    - c02_parte1.qmd
-    - c03_parte2.qmd
+    - c02_intro_R.qmd
+    - c03_intro_R2.qmd
 
 format:
   html:
     theme: cosmo
     css: styles.css
     toc: true
+    code-fold: true
+    code-tools: true
 
 editor: visual
