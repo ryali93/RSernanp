@@ -15,9 +15,9 @@ book:
       - header_right.qmd
   sidebar: 
     background: "#FCCF80"
-    logo: fig/oso.png
+    logo: fig/PiqueroCamanay.png
     search: true
-  repo-url: https://github.com/ryali93/rsernanp/
+  repo-url: https://github.com/ryali93/rsernanp
   repo-subdir: book
   repo-branch: master
   repo-actions: [edit, issue, source]
@@ -36,6 +36,8 @@ book:
     - c01_introduccion.qmd
     - c02_intro_R.qmd
     - c03_intro_R2.qmd
+    - c04_tidyverse_1.qmd
+    # - c04_tidyverse_3.qmd
 
 format:
   html:

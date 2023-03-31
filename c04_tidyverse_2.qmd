@@ -1,0 +1,246 @@
+# Manipulación de datos con tidyverse - 2
+
+## Valores faltantes
+
+Es posible que te hayas preguntado sobre el argumento na.rm que utilizamos anteriormente. ¿Qué pasa si no lo configuramos?
+Esta vez trabajaremos con los datos de deforestación del 2022 para las ANP y haremos algunos análisis con respecto a este.
+
+En primer lugar leeremos la base de datos que se encuentra en formato *.xlsx
+
+```{r}
+defor_2022 <- readxl::read_excel("data/deforestacion_2022.xlsx")
+defor_2022
+```
+
+Si nos fijamos en la columna **md_exa**, obtenemos muchos valores faltantes. Sin embargo, podemos limpiar estos datos y omitir los registros que tengan un valor faltante mediante el argumento **`na.rm`** que elimina los valores faltantes antes del cálculo:
+
+```{r}
+defor_2022 %>% 
+  mutate(mes = format(md_fecimg,"%m")) %>% 
+  group_by(anp_codi, mes, md_exa) %>% 
+  summarise(mean = mean(md_sup, na.rm = TRUE))
+```
+
+En este caso, en el que los valores faltantes representan los polígonos que no se encuentran dentro de una zonificación determinada, también podríamos abordar el problema eliminando primero estos datos. Guardaremos este conjunto de datos para poder reutilizarlo en los siguientes ejemplos.
+
+```{r}
+defor_2022_exa <- defor_2022 %>% 
+  mutate(mes = format(md_fecimg,"%m")) %>% 
+  filter(!is.na(md_exa))
+
+defor_2022_exa %>% 
+  group_by(anp_codi, mes, md_exa) %>% 
+  summarise(mean = mean(md_sup, na.rm = TRUE))
+```
+
+#### Conteos
+
+Siempre que realices una agregación, es una buena idea incluir un conteo (**n()**) o un recuento de valores no faltantes (**sum(!is.na(x))**). De esta forma, puedes verificar que no estás sacando conclusiones basadas en cantidades muy pequeñas de datos. Por ejemplo, analicemos en específico la RC04, veamos cuántos registros no cuentan con una zonificación en este área:
+
+```{r}
+area_exa_rc04 <- defor_2022_exa %>% 
+  filter(anp_codi == "RC04") %>% 
+  group_by(md_exa) %>% 
+  summarise(
+    md_sup = sum(md_sup)
+  )
+```
+
+Podemos obtener más información si hacemos un diagrama de barras de la cantidad de área deforestada por cada zonificación del área:
+
+```{r}
+area_mes <- defor_2022_exa %>% 
+  filter(anp_codi == "RC04") %>% 
+  group_by(md_zonif, mes) %>% 
+  summarise(
+    area = sum(md_sup, na.rm = TRUE)
+  )
+
+ggplot(data = area_mes, mapping = aes(x = md_zonif, y = area)) + 
+  geom_col(alpha = 1/5) +
+  theme_bw()
+```
+
+------------------------------------------------------------------------
+
+Hay otra variación común de este tipo de patrón. Veamos cómo el rendimiento promedio de los bateadores en el béisbol está relacionado con el número de veces que les toca batear. Aquí utilizaremos el conjunto de datos de bateadores para calcular el promedio de bateo (número de bateos / número de intentos) de cada jugador de béisbol de las Grandes Ligas.
+
+Cuando graficamos la habilidad del bateador (medido por el promedio de bateo, pb) contra el número de oportunidades para golpear la pelota (medido por el tiempo al bate,ab), verás dos patrones:
+
+1.  Como en el ejemplo anterior, la variación en nuestro estadístico de resumen disminuye a medida que obtenemos más observaciones.
+
+2.  Existe una correlación positiva entre la habilidad (pb) y las oportunidades para golpear la pelota (ab). Esto se debe a que los equipos controlan quién puede jugar y, obviamente, elegirán a sus mejores jugadores.
+
+```{r}
+# Convert to a tibble so it prints nicely
+bateo <- as_tibble(datos::bateadores)
+
+rendimiento_bateadores <- bateo %>% 
+  group_by(id_jugador) %>% 
+  summarise(
+    pb = sum(golpes, na.rm = TRUE) / sum(al_bate, na.rm = TRUE),
+    ab = sum(al_bate, na.rm = TRUE)
+  )
+
+rendimiento_bateadores %>% 
+  filter(ab > 100) %>% 
+  ggplot(mapping = aes(x = ab, y = pb)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  theme_bw()
+```
+
+Esto también tiene implicaciones importantes para la clasificación. Si ingenuamente ordenas **`desc(pb)`**, verás que las personas con los mejores promedios de bateo tienen claramente mucha suerte, pero no son necesariamente hábiles:
+
+Puedes encontrar una buena explicación de este problema en <http://varianceexplained.org/r/empirical_bayes_baseball/> y <http://www.evanmiller.org/how-not-to-sort-by-average-rating.html>.
+
+## Funciones de resumen útiles
+
+Solo el uso de medias, conteos y sumas puede llevarte muy lejos, pero R proporciona muchas otras funciones de resumen útiles:
+
+-   **Medidas de posición:** `first(x)`, `nth(x, 2)`, `last(x)`. Estas trabajan de forma similar a `x[1]`, `x[2]` y `x[length (x)]`, pero te permiten establecer un valor predeterminado en el caso de que esa posición no exista (es decir, si estás tratando de obtener el tercer elemento de un grupo que solo tiene dos elementos). Por ejemplo, podemos encontrar la primera (first) y última (last) salida para cada día:
+
+```{r message=FALSE}
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    first_dep = first(dep_time), 
+    last_dep = last(dep_time)
+  )
+```
+
+-   **Medidas de centralidad:** hemos usado `mean(x)`, pero `median(x)` también resulta muy útil. La media es la suma dividida por el número de observaciones; la mediana es un valor donde el 50% de x está por encima de él y el 50% está por debajo. A veces es útil combinar agregación con un subconjunto lógico.
+
+```{r message=FALSE, warning=FALSE}
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    avg_delay1 = mean(arr_delay),
+    avg_delay2 = mean(arr_delay[arr_delay > 0]) # the average positive delay
+  )
+```
+
+-   **Medidas de rango:** `min(x)`, `quantile(x, 0.25)`, `max(x)`. Los cuantiles son una generalización de la mediana. Por ejemplo, `quantile(x, 0.25)` encontrará un valor de x que sea mayor a 25% de los valores, y menor que el 75% restante.
+
+```{r}
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(
+    first = min(dep_time),
+    last = max(dep_time)
+  )
+```
+
+-   **Medidas de dispersión:** `sd(x)`, `IQR(x)`, `mad(x)`. La raíz cuadrad de la varianza o desviación estándar `sd(x)` es una medida estándar de dispersión. El rango intercuartil `IQR()` y la desviación media absoluta `mad(x`) son medidas robustas equivalentes que pueden ser más útiles si tienes **valores atípicos**.
+
+```{r}
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(distance_sd = sd(distance)) %>% 
+  arrange(desc(distance_sd))
+```
+
+Estas funciones son complementarias al filtrado en rangos. El filtrado te proporciona todas las variables, con cada observación en una fila distinta:
+
+```{r}
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  mutate(r = min_rank(desc(dep_time))) %>% 
+  filter(r %in% range(r)) %>%
+  dplyr::select(r)
+```
+
+-   **Conteos:** has visto `n()`, que no toma argumentos y que devuelve el tamaño del grupo actual. Para contar la cantidad de valores no faltantes, usa `sum(!is.na (x))`. Para contar la cantidad de valores distintos (únicos), usa `n_distinct(x)`.
+
+```{r}
+# ¿Qué destinos tienen la mayoría de las aerolíneas?
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarise(carriers = n_distinct(carrier)) %>% 
+  arrange(desc(carriers))
+```
+
+Los conteos son tan útiles que **dplyr** proporciona un ayudante simple si todo lo que quieres es un conteo:
+
+```{r}
+not_cancelled %>% 
+  count(dest)
+```
+
+Opcionalmente puedes proporcionar una variable de ponderación. Por ejemplo, podrías usar esto para **"contar"** (sumar) el número total de millas que voló un avión:
+
+```{r}
+not_cancelled %>% 
+  count(tailnum, wt = distance)
+```
+
+-   **Conteos y proporciones de valores lógicos:** `sum(x > 10)`, `mean(y == 0)`. Cuando se usan con funciones numéricas, `TRUE` se convierte en **1** y `FALSE` en **0**. Esto hace que `sum()` y `mean()` sean muy útiles: `sum(x)` te da la cantidad de `TRUE` en `x`, y `mean(x)` te da la proporción.
+
+```{r}
+# ¿Cuántos vuelos salieron antes de las 5 am? 
+# (estos generalmente son vuelos demorados del día anterior)
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_early = sum(dep_time < 500))
+# ¿Qué proporción de vuelos se retrasan más de una hora?
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(hour_prop = mean(arr_delay > 60))
+```
+
+### Agrupación por múltiples variables
+
+Cuando agrupas por múltiples variables, cada resumen se desprende de un nivel de la agrupación. Eso hace que sea más fácil acumular progresivamente en un conjunto de datos:
+
+```{r}
+daily <- group_by(flights, year, month, day)
+(per_day   <- summarise(daily, flights = n()))
+(per_month <- summarise(per_day, flights = sum(flights)))
+(per_year  <- summarise(per_month, flights = sum(flights)))
+```
+
+Ten cuidado al acumular resúmenes progresivamente: está bien para las sumas y los recuentos, pero debes pensar en la ponderación de las medias y las varianzas, además de que no es posible hacerlo exactamente para estadísticas basadas en rangos como la mediana. En otras palabras, la suma de las sumas agrupadas es la suma total, pero la mediana de las medianas agrupadas no es la mediana general.
+
+### Desagrupar
+
+Si necesitas eliminar la agrupación y regresar a las operaciones en datos desagrupados, usa ungroup().
+
+```{r}
+daily %>% 
+  ungroup() %>%             # no longer grouped by date
+  summarise(flights = n())  # all flights
+```
+
+### Transformaciones agrupadas (y filtros)
+
+La agrupación es más útil si se utiliza junto con summarise(), pero también puedes hacer operaciones convenientes con `mutate()` y `filter()`:
+
+-   Encuentra los peores miembros de cada grupo:
+
+```{r}
+flights_sml %>% 
+  group_by(year, month, day) %>%
+  filter(rank(desc(arr_delay)) < 10)
+```
+
+Encuentra todos los grupos más grandes que un determinado umbral:
+
+```{r}
+popular_dests <- flights %>% 
+  group_by(dest) %>% 
+  filter(n() > 365)
+popular_dests
+```
+
+-   Estandariza para calcular las métricas por grupo:
+
+```{r}
+popular_dests %>% 
+  filter(arr_delay > 0) %>% 
+  mutate(prop_delay = arr_delay / sum(arr_delay)) %>% 
+  select(year:day, dest, arr_delay, prop_delay)
+```
+
+Un filtro agrupado es una transformación agrupada seguida de un filtro desagrupado. En general, preferimos evitarlos, excepto para las manipulaciones rápidas y sucias: de lo contrario, es difícil comprobar que has hecho la manipulación correctamente.
+
+Las funciones que trabajan de forma más natural en transformaciones agrupadas y filtros se conocen como funciones de ventana o window functions (frente a las funciones de resumen utilizadas para los resúmenes). Puedes obtener más información sobre las funciones de ventana útiles en la viñeta correspondiente: `vignette("window-functions")`.

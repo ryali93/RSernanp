@@ -1,0 +1,309 @@
+# Manipulación de datos con tidyverse
+
+Esta sección muestra el ecosistema **tidyverse**, compuesto de un conjunto de paquetes que comparten una filosofía común de programación de datos y R, y están diseñados para trabajar juntos de forma natural.
+
+Puedes instalar tidyverse completo con una sola línea de código:
+
+```{r message=FALSE, warning=FALSE, eval=FALSE}
+install.packages("tidyverse")
+```
+
+En su computadora, escriba esta línea de código y ejecutelo. R descargará los paquetes de CRAN y los instalará en su computadora.
+
+```{r tidyverse, message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+Esto le indica que tidyverse está cargando los paquetes **ggplot2, tibble, tidyr, readr, purrr y dplyr**. Estos consideran los núcleo del tidyverse porque los usará en casi todos los análisis.
+
+Los paquetes del tidyverse cambian con bastante frecuencia. Puede ver si hay actualizaciones disponibles y, opcionalmente, instalarlas, ejecutando **`tidyverse_update()`**.
+
+Toma nota del mensaje de conflictos que se imprime cuando cargas el tidyverse. Te dice que dplyr sobrescribe algunas funciones en base R. Si desea usar la versión base de estas funciones después de cargar dplyr, deberá usar sus nombres completos: **`stats::filter()`** y **`stats::lag()`**
+
+## Dplyr básico
+
+La visualización es una herramienta importante para la generación de información, pero es raro obtener los datos exactamente como se necesitan. A menudo, necesitará crear algunas variables o resúmenes nuevos, o tal vez solo desee cambiar el nombre de las variables o reordenar las observaciones para que sea un poco más fácil trabajar con los datos. Para más detalles sobre cómo transformar sus datos es empleando el [**paquete dplyr**](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+Para explorar los verbos básicos de manipulación de datos de **dplyr**, usaremos la base de datos de zonas de amortiguamiento. Este marco de datos contiene. Los datos provienen de la [Servicio Nacional de Áreas Naturales Protegidas (SERNANP)]{style="color:blue"}
+
+```{r warning=FALSE}
+# datos será un 'data frame'
+z_amortiguamiento <- read_csv(file = 'data/zon_amortiguamiento.csv')
+head(z_amortiguamiento)
+```
+
+En esta sección se muestran cinco funciones clave de **dplyr** que le permiten resolver la gran mayoría de sus desafíos de manipulación de datos:
+
+-   Elija observaciones por sus valores (**`filter()`**).
+-   Reordenar las filas (**`arrange()`**).
+-   Elija las variables por sus nombres (**`select()`**).
+-   Crear nuevas variables con funciones de variables existentes (**`mutate()`**).
+-   Colapsar muchos valores en un solo resumen (**`summarize()`**)
+
+Todos estos se pueden usar junto con **`group_by()`**, que cambia el alcance de cada función de operar en todo el conjunto de datos a operar en él grupo por grupo. Estas seis funciones proporcionan los **verbos** para un lenguaje de manipulación de datos.
+
+Todos los verbos funcionan de manera similar:
+
+1.  El primer argumento es un data.frame(marco de datos).
+2.  Los argumentos siguientes describen qué hacer con el marco de datos, utilizando los nombres de las variables **(sin comillas)**.
+3.  El resultado es un nuevo dataframe.
+
+Juntas, estas propiedades hacen que sea fácil encadenar varios pasos simples para lograr un resultado complejo. Profundicemos y veamos cómo funcionan estos verbos.
+
+### Filtrar filas con filter()
+
+<p align="center">
+
+<img src="fig/filter.png" width="500"/>
+
+</p>
+
+**Filter()** te permite filtrar un subconjunto de observaciones según sus valores. El primer argumento es el nombre del data frame. El segundo y los siguientes argumentos son las expresiones que lo filtran.
+
+Por ejemplo, podemos seleccionar todas las ZA con una **Superficie mayor a 400000.00** con:
+
+```{r}
+dplyr::filter(z_amortiguamiento, Superficie > 400000.00 )
+```
+
+Cuando ejecutas esa línea de código, dplyr ejecuta la operación de filtrado y devuelve un nuevo data frame. Las funciones de dplyr nunca modifican su input, por lo que si deseas guardar el resultado, necesitarás usar el operador de asignación, \<-:
+
+```{r}
+filter01 <- dplyr::filter(z_amortiguamiento,Superficie > 400000.00 )
+```
+
+De otro modo usar el operador **"%\>%"** de la librería **magrittr**.
+
+R imprime los resultados o los guarda en una variable. Si desea hacer ambas cosas, puede envolver la tarea **entre paréntesis**:
+
+```{r df-drop-ok, class.source="bg-success"}
+(filter02 <- dplyr::filter(z_amortiguamiento,Superficie > 400000.00))
+```
+
+#### Comparaciones
+
+Para usar el filtrado de manera efectiva, debes saber cómo seleccionar las observaciones que deseas utilizando los operadores de comparación. R proporciona el conjunto estándar: `>`, `>=`, `<`, `<=`, `!=` (no igual) y `==` (igual).
+
+Cuando comienzas con R, el error más fácil de cometer es usar `=` en lugar de `==` cuando se busca igualdad. Cuando esto suceda, obtendrás un error informativo:
+
+```{r echo=TRUE, message=TRUE, warning=TRUE, error=TRUE}
+dplyr::filter(z_amortiguamiento,Superficie > 400000.00)
+```
+
+Hay otro problema común que puedes encontrar al usar `==`: los números de coma flotante. **¡Estos resultados pueden sorprenderte!**
+
+```{r}
+sqrt(2)^2 == 2
+1 / 49 * 49 == 1
+```
+
+Las computadoras usan **aritmética de precisión finita** (obviamente, **NO** pueden **almacenar** una **cantidad infinita de dígitos**), así que recuerda que cada número que observas es una aproximación. En lugar de confiar en **`==`**, usa **`near()`** (cercano, en inglés):
+
+```{r}
+near(sqrt(2)^2, 2)
+near(1 / 49 * 49, 1)
+```
+
+#### Operadores lógicos
+
+Si tienes múltiples argumentos para **`filter()`** estos se combinan con **"y"**: cada expresión debe ser verdadera para que una fila se incluya en el output. Para otros tipos de combinaciones necesitarás usar operadores Booleanos: **& es "y"**, **\| es "o"**, y **! es "no"**. La siguiente figura muestra el conjunto completo de operaciones **Booleanas**.
+
+<img src="https://es.r4ds.hadley.nz/diagrams_w_text_as_path/es/transform-logical.svg" width="500"/>
+
+El siguiente código sirve para encontrar todas las areas iguales a `310242.10` o `1880.50`:
+
+```{r}
+dplyr::filter(z_amortiguamiento, Superficie == 310242.10 | Superficie == 1880.50)
+```
+
+El orden de las operaciones es importante. No puedes escribir **`filter(z_amortiguamiento, Superficie == (310242.10 | 1880.50))`**. Si quieres saber si es uno u otro valor, se puede resolver con **`x %in% y`** (es decir, x en y). Esto **seleccionará cada fila donde x es uno de los valores en y**. Podríamos usarlo para reescribir el código de arriba:
+
+```{r}
+dplyr::filter(z_amortiguamiento, Superficie %in% c(310242.10, 1880.50))
+```
+
+A veces puedes simplificar subconjuntos complicados al recordar **la ley de De Morgan**: **!(x & y)** es lo mismo que **!x \| !y**, y **!(x \| y)** es lo mismo que \*\*!x & !y\*. Por ejemplo, si deseas encontrar areas mayores a `26.2` y menores `8652.24` .
+
+```{r}
+dplyr::filter(z_amortiguamiento,!(Superficie > 8652.24  | Superficie < 26.2))
+```
+
+### Reordenar las filas con arrange()
+
+**`arrange()** funciona de manera similar a`filter()\` excepto que en lugar de seleccionar filas, cambia su orden. La función toma un **dataframe** y un conjunto de nombres de columnas (o expresiones más complicadas) para ordenar según ellas. Si proporcionas más de un nombre de columna, cada columna adicional se utilizará para romper empates en los valores de las columnas anteriores:
+
+```{r}
+arrange(z_amortiguamiento, Codigo)
+```
+
+Usa **`desc()`** para reordenar por una columna en orden descendente:
+
+```{r}
+arrange(z_amortiguamiento, desc(Superficie))
+```
+
+### Seleccionar columnas con select()
+
+<p align="center">
+<img src="fig/select.png" width="500"/>
+</p>
+
+No es raro obtener conjuntos de datos con cientos de variables. En este caso, el primer desafío a menudo se reduce a las variables que realmente te interesan. `select()` te permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables.
+
+En este caso emplearemos `select()` para quedarnos con algunas columnas en específico:
+
+```{r}
+# Seleccionar columnas por nombre
+dplyr::select(z_amortiguamiento, Codigo, Area_natur)
+# Seleccionar todas las columnas entre Codigo y Periodo (incluyente)
+dplyr::select(z_amortiguamiento, Codigo:Periodo)
+# Seleccionar todas las columnas excepto aquellas entre Codigo y Periodo (incluyente)
+dplyr::select(z_amortiguamiento, -(Codigo:Periodo))
+```
+
+Hay una serie de **funciones auxiliares** que puedes usar dentro de `select()`:
+
+-   **`starts_with("abc")`**: coincide con los nombres que comienzan con "abc".
+-   **`ends_with("xyz")`**: coincide con los nombres que terminan con "xyz".
+-   **`contains("ijk")`**: coincide con los nombres que contienen "ijk".
+-   **`matches("(.)\\1")`**: selecciona variables que coinciden con una expresión regular **(regex)**. Esta en particular coincide con cualquier variable que contenga caracteres repetidos.
+-   **`num_range("x", 1:3)`**: coincide con x1,x2 y x3.
+
+Consulta `?select` para ver más detalles.
+
+`select()` se puede usar para cambiar el nombre de las variables, pero rara vez es útil porque descarta todas las variables que no se mencionan explícitamente. En su lugar, utiliza **`rename()`**, que es una variante de `select()` que mantiene todas las variables que no se mencionan explícitamente:
+
+```{r}
+names(z_amortiguamiento)
+# new name = old name
+df <- rename(z_amortiguamiento, "Baselegal" = Base_legal)
+names(df)
+```
+
+Otra opción es usar `select()` junto con el auxiliar **`everything()`** (todo, en inglés). Esto es útil si tienes un grupo de variables que te gustaría mover al comienzo del data frame.
+
+```{r}
+dplyr::select(z_amortiguamiento, Superficie, everything())
+```
+
+### Añadir nuevas variables con mutate()
+
+<p align="center">
+<img src="fig/mutate.png" width="500"/>
+</p>
+
+Además de seleccionar conjuntos de columnas existentes, a menudo es útil crear nuevas columnas en función de columnas existentes. Ese es el trabajo de **`mutate()`** (del inglés mutar o transformar).
+
+**`mutate()`** siempre agrega nuevas columnas al final de un conjunto de datos, así que comenzaremos creando un conjunto de datos más pequeño para que podamos ver las nuevas variables. Recuerda que cuando usas **RStudio**, la manera más fácil de ver todas las columnas es **View()**.
+
+```{r}
+z_amortiguamiento_sl <- dplyr::select(
+  z_amortiguamiento,
+  Codigo:Periodo,
+  contains("leg"),
+  Superficie
+)
+
+mutate(
+  z_amortiguamiento_sl,
+  area_ha = Superficie / 10000,
+  inicio_legal = str_split(Periodo, "-", simplify = TRUE)[,1],
+  fin_legal = str_split(Periodo, "-", simplify = TRUE)[,2]
+)
+```
+
+Si solo quieres conservar las nuevas variables, usa **`transmute()`**:
+
+```{r}
+transmute(
+  z_amortiguamiento_sl,
+  area_ha = Superficie / 10000,
+  inicio_legal = str_split(Periodo, "-", simplify = TRUE)[,1],
+  fin_legal = str_split(Periodo, "-", simplify = TRUE)[,2]
+)
+```
+
+#### Funciones de creación útiles
+
+Hay muchas funciones para crear nuevas variables que puedes usar con `mutate()`. La propiedad clave es que la función debe ser vectorizada: debe tomar un vector de valores como input, y devolver un vector con el mismo número de valores como output. No hay forma de enumerar todas las posibles funciones que podrías usar, pero aquí hay una selección de funciones que frecuentemente son útiles:
+
+-   Operadores aritméticos: `+`, `-`, `*`, `/`, `^`. Todos están vectorizados usando las llamadas **"reglas de reciclaje"**. Si un parámetro es más corto que el otro, se extenderá automáticamente para tener la misma longitud. Esto es muy útil cuando uno de los argumentos es un solo número: `Superficie / 100000`, `hours * 60 + minute`, etc. Los operadores aritméticos también son útiles junto con las funciones de agregar que aprenderás más adelante. Por ejemplo, `x / sum(x)` calcula la proporción de un total, y `y - mean(y)` calcula la diferencia de la media.
+
+-   **Aritmética modular**: **`%/%`** (división entera) y **`%%`** (resto), donde `x == y * (x %/% y) + (x %% y)`. La aritmética modular es una herramienta útil porque te permite dividir enteros en partes. 
+
+-   **Logaritmos:** `log()`, `log2()`, `log10()`. Los logaritmos son increíblemente útiles como transformación para trabajar con datos con múltiples órdenes de magnitud. También convierten las relaciones multiplicativas en aditivas, bastante empleados cuando se trabajan con modelos. En igualdad de condiciones, recomendamos usar `log2()` porque es más fácil de interpretar: una diferencia de 1 en la escala de registro corresponde a la duplicación de la escala original y una diferencia de -1 corresponde a dividir a la mitad.
+
+-   **Rezagos:** `lead()` y `lag()` te permiten referirte a un valor adelante o un valor atrás (con rezago). Esto te permite calcular las diferencias móviles (por ejemplo, `x - lag(x)`) o encontrar cuándo cambian los valores `(x! = lag (x))`. Estos comandos son más útiles cuando se utilizan junto con `group_by()`, algo que aprenderás en breve.
+
+```{r}
+(x <- 1:10)
+lag(x)
+lead(x)
+```
+
+-   **Agregados acumulativos y móviles:** R proporciona funciones para ejecutar sumas, productos, mínimos y máximos: `cumsum()`, `cumprod()`, `cummin()`, `cummax()`; **dplyr**, por su parte, proporciona `cummean()` para las medias acumuladas. Si necesitas calcular agregados móviles (es decir, una suma calculada en una ventana móvil), prueba el paquete **RcppRoll**.
+
+```{r}
+x
+cumsum(x)
+cummean(x)
+```
+
+-   Comparaciones lógicas: `<`, `<=`, `>`, `>=`, `!=`. Si estás haciendo una secuencia compleja de operaciones lógicas, es a menudo una buena idea almacenar los valores provisionales en nuevas variables para que puedas comprobar que cada paso funciona como se espera.
+
+### Resúmenes agrupados con summarise()
+
+El último verbo clave es **`summarise()`** (resumir, en inglés). Se encarga de colapsar un data frame en una sola fila:
+
+```{r}
+summarize(z_amortiguamiento, area_mean = mean(Superficie, na.rm = TRUE))
+```
+
+En caso se requiera categorizar una columna utilizaremos `case_when()` dentro de la función `mutate()`.
+
+`summarise()` no es muy útil a menos que lo enlacemos con `group_by()`. Esto cambia la unidad de análisis del conjunto de datos completo a grupos individuales. Luego, cuando uses los verbos **dplyr** en un data frame agrupado, estos se aplicarán automáticamente **"por grupo"**. Por ejemplo, si aplicamos exactamente el mismo código a un dataframe agrupado por fecha, obtenemos el retraso promedio por fecha:
+
+```{r}
+z_amortiguamiento_g <- mutate(z_amortiguamiento, 
+       Grupo = case_when(
+         Superficie < 50000 ~ "Grupo1",
+         Superficie >= 50000 & Superficie <= 100000 ~ "Grupo2",
+         Superficie >= 100000 & Superficie <= 200000 ~ "Grupo3",
+         Superficie >= 200000 ~ "Grupo4"
+       ))
+by_group <- group_by(z_amortiguamiento_g, Grupo)
+summarize(by_group, sup_mean = mean(Superficie, na.rm = TRUE))
+```
+
+Juntos `group_by()` y `summarise()` proporcionan una de las herramientas que más comúnmente usarás cuando trabajes con dplyr: resúmenes agrupados. Pero antes de ir más allá con esto, tenemos que introducir una idea nueva y poderosa: el `pipe` (pronunciado /paip/, que en inglés significa ducto o tubería).
+
+## Combinación de múltiples operaciones con el pipe
+
+Imagina que queremos agrupar por grupos y generar un resumen de cuántos elementos y la media de estos hay en cada uno de ellos.
+
+la relación entre la distancia y el atraso promedio para cada ubicación. Usando lo que sabes acerca de dplyr, podrías escribir un código como este:
+
+```{r warning=FALSE}
+z_amortiguamiento_r <- z_amortiguamiento_g %>% 
+  group_by(Grupo) %>% 
+  summarise(
+    cantidad = n(),
+    sup_mean = mean(Superficie, na.rm = TRUE)
+  )
+
+ggplot(data = z_amortiguamiento_r, mapping = aes(x = Grupo, y = cantidad)) +
+ geom_col(aes(size = cantidad), alpha = 1/3) +
+ geom_smooth(se = FALSE)
+```
+
+Se puede resumir en tres pasos para preparar la información:
+
+1.  Agrupar los datos según el criterio a analizar.
+2.  Resumir para calcular la cantidad de cada grupo y el promedio por cada uno de ellos.
+3.  Filtrar para eliminar datos ruidosos.
+
+Lo que permite el uso del `pipe` es hacer una secuencia más fácil de leer. Se puede leer como una serie de declaraciones imperativas: **agrupa**, luego **resume** y luego **filtra**. Como sugiere esta lectura, una buena forma de pronunciar **`%>%`** cuando se lee el código es **"luego"**.
+
+Lo que ocurre detrás del código, es que **x %\>% f(y)** se convierte en **f(x, y)**, y **x %\>% f(y) %\>% g(z)** se convierte en **g(f(x, y), z)** y así sucesivamente. Puedes usar el ***pipe*** para reescribir múltiples operaciones de forma que puedas leer de izquierda a derecha, de arriba hacia abajo. **Usaremos pipes con frecuencia a partir de ahora porque mejora considerablemente la legibilidad del código**. 
+
+Trabajar con el pipe es uno de los criterios clave para pertenecer al tidyverse. La única excepción es ggplot2: se escribió antes de que se descubriera el pipe. Lamentablemente, la siguiente iteración de ggplot2, ggvis, que sí utiliza el pipe, aún no está lista para el horario estelar.

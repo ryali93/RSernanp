@@ -28,5 +28,17 @@
   },
   "c03_intro_R2.qmd": {
     "c03_intro_R2.html": "95b65d95"
+  },
+  "c04_tidyverse.qmd": {
+    "c04_tidyverse.html": "d658d6b0"
+  },
+  "c04_tidyverse_1.qmd": {
+    "c04_tidyverse_1.html": "3e480420"
+  },
+  "c04_tidyverse_2.qmd": {
+    "c04_tidyverse_2.html": "9a1e9920"
+  },
+  "c04_tidyverse_3.qmd": {
+    "c04_tidyverse_3.html": "c511f82b"
   }
 }

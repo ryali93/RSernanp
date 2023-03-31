@@ -2,8 +2,7 @@
 
 ## Lenguajes de programación
 
-Un lenguaje de programación es una forma de comunicarnos con una computadora e indicarle qué queremos hacer.
-En otras palabras, nos permitirá darle instrucciones y reglas que permiten crear herramientas, programas, realizar análisis o tareas específicas. 
+Un lenguaje de programación es una forma de comunicarnos con una computadora e indicarle qué queremos hacer. En otras palabras, nos permitirá darle instrucciones y reglas que permiten crear herramientas, programas, realizar análisis o tareas específicas.
 
 Existen distintos tipos de lenguaje, según la conexión entre el software y hardware podemos diferenciarlos en lenguajes bajo nivel y de alto nivel. La diferencia se encuentra en lo cerca o lejos que estemos del hardware de nuestro equipo.
 
@@ -12,6 +11,7 @@ Además, podemos diferenciarlos según el propósito o el modo de uso, aquellos 
 ![Lenguajes de programación](fig/lenguajes.png)
 
 ## Interfaz de Desarrollo Integrado (IDE) y editor de texto
+
 ![IDEs y editores de texto](fig/ide_texteditor.png)
 
 ## ¿Qué es R?

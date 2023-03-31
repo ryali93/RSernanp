@@ -1,7 +1,8 @@
 # Control de Flujo y funciones
+
 ## Control de Flujo Condicionales
 
-La toma de decisiones es una parte importante de la programación. Esto se puede lograr en la programación R usando la nomenclatura condicional **if**  **else**.
+La toma de decisiones es una parte importante de la programación. Esto se puede lograr en la programación R usando la nomenclatura condicional **if** **else**.
 
 ### If
 
@@ -11,9 +12,9 @@ if (expresion) {
 }
 ```
 
-- Si **expresion** es **TRUE**, la instrucción se ejecuta. Pero si es **FALSO**, no pasa nada.
-- Aquí, **expresion** puede ser un vector lógico o numérico, pero solo se tiene en cuenta el primer elemento.
-- En el caso del vector numérico, cero se toma como **FALSO**, el resto como **VERDADERO**.
+-   Si **expresion** es **TRUE**, la instrucción se ejecuta. Pero si es **FALSO**, no pasa nada.
+-   Aquí, **expresion** puede ser un vector lógico o numérico, pero solo se tiene en cuenta el primer elemento.
+-   En el caso del vector numérico, cero se toma como **FALSO**, el resto como **VERDADERO**.
 
 ### If...Else
 
@@ -25,8 +26,7 @@ if (expresion) {
 }
 ```
 
-La parte **else** es opcional y solo se evalúa si **expresion** es **FALSE**.
-Es importante tener en cuenta que **else** debe estar en la misma línea que las llaves de cierre de la instrucción if.
+La parte **else** es opcional y solo se evalúa si **expresion** es **FALSE**. Es importante tener en cuenta que **else** debe estar en la misma línea que las llaves de cierre de la instrucción if.
 
 ```{r eval=FALSE}
 x <- 0
@@ -76,7 +76,7 @@ if (valtemp %in% 12:22 & valsuelo =="seco") {
 
 Los bucles son una de las estructuras fundamentales en la programación. Los bucles permiten iterar sobre cada elemento en una secuencia, uno a la vez, y hacer algo con esos elementos.
 
-### FOR 
+### FOR
 
 Un bucle **for** es muy valioso cuando necesitamos iterar sobre una lista de elementos o un rango de números. Loop se puede usar para iterar sobre una lista, marco de datos, vector, matriz o cualquier otro objeto. Los tirantes y el corchete son obligatorios.
 
@@ -122,14 +122,34 @@ while (inicio <= 5){
 
 **Otros iteradores**
 
-- repeat
-- do-while (*otros leguajes)
+-   repeat
+-   do-while (\*otros leguajes)
 
-Control de flujo
-* break, next
-
+Control de flujo \* break, next
 
 ## Funciones
+
+La noción de **función** está bastante de moda, pero transmite diferentes significados. Dos usos distintos:
+
+-   **Noción matemática** de una función: Proporcionar un mapeo entre conjuntos de elementos.
+-   Una explicación "funcional" explica un fenómeno natural en términos de sus objetivos o propósitos.
+
+En programación, las funciones también proporcionan asignaciones, pero se las considera mejor como herramientas para resolver tareas. La programación de funciones requiere la identificación de tareas que se encontrarán y, por lo tanto, deben resolverse repetidamente (por nosotros mismos o por otros).
+
+```{r include=FALSE, eval=FALSE}
+f_name <- function(<args>) {<body>}
+```
+Los argumentos de la función **<args>** especifican las entradas (o los datos, representados como objetos R) aceptados por una función.
+Cada argumento puede ser obligatorio u opcional (proporcionando valores predeterminados).
+
+El **<cuerpo>** de la función generalmente usa las entradas proporcionadas por **<args>** para realizar la tarea para la cual se creó la función. Puede contener cantidades arbitrarias de código R (incluidas referencias a objetos R existentes y otras funciones). Por defecto, la función devuelve el resultado de su última expresión.
+
+Aquí un ejemplo:
+```{r}
+power <- function(x, exp = 1) {
+  x^exp
+}
+```
 
 ## Paquetes y librerías
 
@@ -137,11 +157,7 @@ Los paquetes de R amplían la funcionalidad de R al proporcionar funciones, dato
 
 Solo tienes que instalar el paquete una vez, si desea actualizar un paquete previamente instalado a una versión más nueva, puede ir a la ventana de Ficheros en Packages \> Update y seleccionar los paquetes que desea actualizar.
 
-<p style="text-align: justify;">
-
 No podrá utilizar las funciones, los objetos y los archivos de ayuda de un paquete hasta que lo cargue con **`library()`**. Una vez que haya instalado un paquete, puede cargarlo con la función **`library()`**:
-
-</p>
 
 ```{r include=FALSE}
 pacman::p_unload(
@@ -177,3 +193,5 @@ pacman::p_load(
   Lahman, datos
 )
 ```
+
+Para mayor información de R base, se recomienda la siguiente ![lectura](https://iqss.github.io/dss-workshops/R/Rintro/base-r-cheat-sheet.pdf).

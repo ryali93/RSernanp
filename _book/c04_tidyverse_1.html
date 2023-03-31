@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Taller de programación en el lenguaje de programación R para servidores de SERNANP.">
+
+<title>Taller de programación R - SERNANP - 5&nbsp; Manipulación de datos con tidyverse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./c03_intro_R2.html" rel="prev">
+<link href="./https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Taller de programación R - SERNANP - 5&nbsp; Manipulación de datos con tidyverse">
+<meta property="og:description" content="A side-by-side comparison of the Polars and Pandas libraries.">
+<meta property="og:image" content="https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png">
+<meta property="og:site-name" content="Taller de programación R - SERNANP">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="https://geoportal.sernanp.gob.pe/wp-content/uploads/2019/12/logo_sernanp-01.png" alt="" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Taller de programación R - SERNANP</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="./header_right.qmd">
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ryali93/rsernanp/tree/master/book/"><i class="bi bi-github" role="img" aria-label="Source Code">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item dropdown  compact">
+    <a class="nav-link dropdown-toggle" href="#" id="" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-share" role="img" aria-label="Share">
+</i> 
+ <span class="menu-text"></span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="">    
+        <li>
+    <a class="dropdown-item" href="https://twitter.com/intent/tweet?url=|url|"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="dropdown-text">Twitter</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.facebook.com/sharer/sharer.php?u=|url|"><i class="bi bi-facebook" role="img">
+</i> 
+ <span class="dropdown-text">Facebook</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|"><i class="bi bi-linkedin" role="img">
+</i> 
+ <span class="dropdown-text">LinkedIn</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Manipulación de datos con tidyverse</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./fig/PiqueroCamanay.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Presentación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c01_introduccion.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Introducción a los lenguajes de programación</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c02_intro_R.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Primeros pasos en R</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c03_intro_R2.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Control de Flujo y funciones</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./c04_tidyverse_1.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Manipulación de datos con tidyverse</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#dplyr-básico" id="toc-dplyr-básico" class="nav-link active" data-scroll-target="#dplyr-básico"><span class="toc-section-number">5.1</span>  Dplyr básico</a>
+  <ul class="collapse">
+  <li><a href="#filtrar-filas-con-filter" id="toc-filtrar-filas-con-filter" class="nav-link" data-scroll-target="#filtrar-filas-con-filter"><span class="toc-section-number">5.1.1</span>  Filtrar filas con filter()</a></li>
+  <li><a href="#reordenar-las-filas-con-arrange" id="toc-reordenar-las-filas-con-arrange" class="nav-link" data-scroll-target="#reordenar-las-filas-con-arrange"><span class="toc-section-number">5.1.2</span>  Reordenar las filas con arrange()</a></li>
+  <li><a href="#seleccionar-columnas-con-select" id="toc-seleccionar-columnas-con-select" class="nav-link" data-scroll-target="#seleccionar-columnas-con-select"><span class="toc-section-number">5.1.3</span>  Seleccionar columnas con select()</a></li>
+  <li><a href="#añadir-nuevas-variables-con-mutate" id="toc-añadir-nuevas-variables-con-mutate" class="nav-link" data-scroll-target="#añadir-nuevas-variables-con-mutate"><span class="toc-section-number">5.1.4</span>  Añadir nuevas variables con mutate()</a></li>
+  <li><a href="#resúmenes-agrupados-con-summarise" id="toc-resúmenes-agrupados-con-summarise" class="nav-link" data-scroll-target="#resúmenes-agrupados-con-summarise"><span class="toc-section-number">5.1.5</span>  Resúmenes agrupados con summarise()</a></li>
+  </ul></li>
+  <li><a href="#combinación-de-múltiples-operaciones-con-el-pipe" id="toc-combinación-de-múltiples-operaciones-con-el-pipe" class="nav-link" data-scroll-target="#combinación-de-múltiples-operaciones-con-el-pipe"><span class="toc-section-number">5.2</span>  Combinación de múltiples operaciones con el pipe</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/ryali93/rsernanp/edit/master/book/c04_tidyverse_1.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/ryali93/rsernanp/issues/new" class="toc-action">Report an issue</a></p><p><a href="https://github.com/ryali93/rsernanp/blob/master/book/c04_tidyverse_1.qmd" class="toc-action">View source</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Manipulación de datos con tidyverse</span></h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Esta sección muestra el ecosistema <strong>tidyverse</strong>, compuesto de un conjunto de paquetes que comparten una filosofía común de programación de datos y R, y están diseñados para trabajar juntos de forma natural.</p>
+<p>Puedes instalar tidyverse completo con una sola línea de código:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>En su computadora, escriba esta línea de código y ejecutelo. R descargará los paquetes de CRAN y los instalará en su computadora.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Esto le indica que tidyverse está cargando los paquetes <strong>ggplot2, tibble, tidyr, readr, purrr y dplyr</strong>. Estos consideran los núcleo del tidyverse porque los usará en casi todos los análisis.</p>
+<p>Los paquetes del tidyverse cambian con bastante frecuencia. Puede ver si hay actualizaciones disponibles y, opcionalmente, instalarlas, ejecutando <strong><code>tidyverse_update()</code></strong>.</p>
+<p>Toma nota del mensaje de conflictos que se imprime cuando cargas el tidyverse. Te dice que dplyr sobrescribe algunas funciones en base R. Si desea usar la versión base de estas funciones después de cargar dplyr, deberá usar sus nombres completos: <strong><code>stats::filter()</code></strong> y <strong><code>stats::lag()</code></strong></p>
+<section id="dplyr-básico" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="dplyr-básico"><span class="header-section-number">5.1</span> Dplyr básico</h2>
+<p>La visualización es una herramienta importante para la generación de información, pero es raro obtener los datos exactamente como se necesitan. A menudo, necesitará crear algunas variables o resúmenes nuevos, o tal vez solo desee cambiar el nombre de las variables o reordenar las observaciones para que sea un poco más fácil trabajar con los datos. Para más detalles sobre cómo transformar sus datos es empleando el <a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf"><strong>paquete dplyr</strong></a></p>
+<p>Para explorar los verbos básicos de manipulación de datos de <strong>dplyr</strong>, usaremos la base de datos de zonas de amortiguamiento. Este marco de datos contiene. Los datos provienen de la <span style="color:blue">Servicio Nacional de Áreas Naturales Protegidas (SERNANP)</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># datos será un 'data frame'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">'data/zon_amortiguamiento.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 80 Columns: 11
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: "," chr
+(6): Codigo, Area_natur, Periodo, Base_legal, Base_leg00, Base_leg01 dbl (2):
+...1, Superficie date (3): Fecha_lega, Fecha_le00, Fecha_le01
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...1`</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(z_amortiguamiento)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1     1 RC04   Ashaninka     2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+2     2 BP03   de Pui Pui    2019-2… R.J. Nº 2… 2008-10-28 &lt;NA&gt;       1899-12-30
+3     3 RN12   Matsés        2023-2… R.P. Nº 0… 2014-02-27 &lt;NA&gt;       1899-12-30
+4     4 RN10   Allpahuayo M… 2022-2… R.J. Nº 1… 2007-07-24 &lt;NA&gt;       1899-12-30
+5     5 RN06   de Salinas y… 2016-2… R.J. Nº 0… 2007-04-26 &lt;NA&gt;       1899-12-30
+6     6 RN02   de Junín      2008-2… R.J. Nº 1… 2008-06-03 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>En esta sección se muestran cinco funciones clave de <strong>dplyr</strong> que le permiten resolver la gran mayoría de sus desafíos de manipulación de datos:</p>
+<ul>
+<li>Elija observaciones por sus valores (<strong><code>filter()</code></strong>).</li>
+<li>Reordenar las filas (<strong><code>arrange()</code></strong>).</li>
+<li>Elija las variables por sus nombres (<strong><code>select()</code></strong>).</li>
+<li>Crear nuevas variables con funciones de variables existentes (<strong><code>mutate()</code></strong>).</li>
+<li>Colapsar muchos valores en un solo resumen (<strong><code>summarize()</code></strong>)</li>
+</ul>
+<p>Todos estos se pueden usar junto con <strong><code>group_by()</code></strong>, que cambia el alcance de cada función de operar en todo el conjunto de datos a operar en él grupo por grupo. Estas seis funciones proporcionan los <strong>verbos</strong> para un lenguaje de manipulación de datos.</p>
+<p>Todos los verbos funcionan de manera similar:</p>
+<ol type="1">
+<li>El primer argumento es un data.frame(marco de datos).</li>
+<li>Los argumentos siguientes describen qué hacer con el marco de datos, utilizando los nombres de las variables <strong>(sin comillas)</strong>.</li>
+<li>El resultado es un nuevo dataframe.</li>
+</ol>
+<p>Juntas, estas propiedades hacen que sea fácil encadenar varios pasos simples para lograr un resultado complejo. Profundicemos y veamos cómo funcionan estos verbos.</p>
+<section id="filtrar-filas-con-filter" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="filtrar-filas-con-filter"><span class="header-section-number">5.1.1</span> Filtrar filas con filter()</h3>
+<p align="center">
+</p><p><img src="fig/filter.png" width="500"></p>
+<p></p>
+<p><strong>Filter()</strong> te permite filtrar un subconjunto de observaciones según sus valores. El primer argumento es el nombre del data frame. El segundo y los siguientes argumentos son las expresiones que lo filtran.</p>
+<p>Por ejemplo, podemos seleccionar todas las ZA con una <strong>Superficie mayor a 400000.00</strong> con:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1    18 PN09   Cordillera A… 2017-2… R.P. Nº 0… 2011-04-14 &lt;NA&gt;       1899-12-30
+2    30 PN06   del Río Abis… 2014-2… R.J. Nº 2… 2006-09-27 &lt;NA&gt;       1899-12-30
+3    42 RN08   Pacaya-Samir… 2017-2… R.J. Nº 1… 2009-09-24 &lt;NA&gt;       1899-12-30
+4    51 RC02   El Sira       2015-2… R.P. Nº 0… 2009-02-27 &lt;NA&gt;       1899-12-30
+5    60 RP02   Subcuenca de… 2019-2… R.P. Nº 1… 2009-09-15 &lt;NA&gt;       1899-12-30
+6    66 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+7    67 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Cuando ejecutas esa línea de código, dplyr ejecuta la operación de filtrado y devuelve un nuevo data frame. Las funciones de dplyr nunca modifican su input, por lo que si deseas guardar el resultado, necesitarás usar el operador de asignación, &lt;-:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>filter01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span> )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>De otro modo usar el operador <strong>“%&gt;%”</strong> de la librería <strong>magrittr</strong>.</p>
+<p>R imprime los resultados o los guarda en una variable. Si desea hacer ambas cosas, puede envolver la tarea <strong>entre paréntesis</strong>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r bg-success code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(filter02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1    18 PN09   Cordillera A… 2017-2… R.P. Nº 0… 2011-04-14 &lt;NA&gt;       1899-12-30
+2    30 PN06   del Río Abis… 2014-2… R.J. Nº 2… 2006-09-27 &lt;NA&gt;       1899-12-30
+3    42 RN08   Pacaya-Samir… 2017-2… R.J. Nº 1… 2009-09-24 &lt;NA&gt;       1899-12-30
+4    51 RC02   El Sira       2015-2… R.P. Nº 0… 2009-02-27 &lt;NA&gt;       1899-12-30
+5    60 RP02   Subcuenca de… 2019-2… R.P. Nº 1… 2009-09-15 &lt;NA&gt;       1899-12-30
+6    66 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+7    67 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<section id="comparaciones" class="level4" data-number="5.1.1.1">
+<h4 data-number="5.1.1.1" class="anchored" data-anchor-id="comparaciones"><span class="header-section-number">5.1.1.1</span> Comparaciones</h4>
+<p>Para usar el filtrado de manera efectiva, debes saber cómo seleccionar las observaciones que deseas utilizando los operadores de comparación. R proporciona el conjunto estándar: <code>&gt;</code>, <code>&gt;=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>!=</code> (no igual) y <code>==</code> (igual).</p>
+<p>Cuando comienzas con R, el error más fácil de cometer es usar <code>=</code> en lugar de <code>==</code> cuando se busca igualdad. Cuando esto suceda, obtendrás un error informativo:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1    18 PN09   Cordillera A… 2017-2… R.P. Nº 0… 2011-04-14 &lt;NA&gt;       1899-12-30
+2    30 PN06   del Río Abis… 2014-2… R.J. Nº 2… 2006-09-27 &lt;NA&gt;       1899-12-30
+3    42 RN08   Pacaya-Samir… 2017-2… R.J. Nº 1… 2009-09-24 &lt;NA&gt;       1899-12-30
+4    51 RC02   El Sira       2015-2… R.P. Nº 0… 2009-02-27 &lt;NA&gt;       1899-12-30
+5    60 RP02   Subcuenca de… 2019-2… R.P. Nº 1… 2009-09-15 &lt;NA&gt;       1899-12-30
+6    66 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+7    67 PN11   Alto Purús    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Hay otro problema común que puedes encontrar al usar <code>==</code>: los números de coma flotante. <strong>¡Estos resultados pueden sorprenderte!</strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> <span class="dv">49</span> <span class="sc">*</span> <span class="dv">49</span> <span class="sc">==</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p>Las computadoras usan <strong>aritmética de precisión finita</strong> (obviamente, <strong>NO</strong> pueden <strong>almacenar</strong> una <strong>cantidad infinita de dígitos</strong>), así que recuerda que cada número que observas es una aproximación. En lugar de confiar en <strong><code>==</code></strong>, usa <strong><code>near()</code></strong> (cercano, en inglés):</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">near</span>(<span class="fu">sqrt</span>(<span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">near</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">49</span> <span class="sc">*</span> <span class="dv">49</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="operadores-lógicos" class="level4" data-number="5.1.1.2">
+<h4 data-number="5.1.1.2" class="anchored" data-anchor-id="operadores-lógicos"><span class="header-section-number">5.1.1.2</span> Operadores lógicos</h4>
+<p>Si tienes múltiples argumentos para <strong><code>filter()</code></strong> estos se combinan con <strong>“y”</strong>: cada expresión debe ser verdadera para que una fila se incluya en el output. Para otros tipos de combinaciones necesitarás usar operadores Booleanos: <strong>&amp; es “y”</strong>, <strong>| es “o”</strong>, y <strong>! es “no”</strong>. La siguiente figura muestra el conjunto completo de operaciones <strong>Booleanas</strong>.</p>
+<p><img src="https://es.r4ds.hadley.nz/diagrams_w_text_as_path/es/transform-logical.svg" width="500"></p>
+<p>El siguiente código sirve para encontrar todas las areas iguales a <code>310242.10</code> o <code>1880.50</code>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">==</span> <span class="fl">310242.10</span> <span class="sc">|</span> Superficie <span class="sc">==</span> <span class="fl">1880.50</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1     5 RN06   de Salinas y… 2016-2… R.J. Nº 0… 2007-04-26 &lt;NA&gt;       1899-12-30
+2    52 SN03   Lagunas de M… 2015-2… R.P. Nº 2… 2015-10-29 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>El orden de las operaciones es importante. No puedes escribir <strong><code>filter(z_amortiguamiento, Superficie == (310242.10 | 1880.50))</code></strong>. Si quieres saber si es uno u otro valor, se puede resolver con <strong><code>x %in% y</code></strong> (es decir, x en y). Esto <strong>seleccionará cada fila donde x es uno de los valores en y</strong>. Podríamos usarlo para reescribir el código de arriba:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fl">310242.10</span>, <span class="fl">1880.50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 11
+   ...1 Codigo Area_natur    Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+1     5 RN06   de Salinas y… 2016-2… R.J. Nº 0… 2007-04-26 &lt;NA&gt;       1899-12-30
+2    52 SN03   Lagunas de M… 2015-2… R.P. Nº 2… 2015-10-29 &lt;NA&gt;       1899-12-30
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>A veces puedes simplificar subconjuntos complicados al recordar <strong>la ley de De Morgan</strong>: <strong>!(x &amp; y)</strong> es lo mismo que <strong>!x | !y</strong>, y <strong>!(x | y)</strong> es lo mismo que **!x &amp; !y*. Por ejemplo, si deseas encontrar areas mayores a <code>26.2</code> y menores <code>8652.24</code> .</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,<span class="sc">!</span>(Superficie <span class="sc">&gt;</span> <span class="fl">8652.24</span>  <span class="sc">|</span> Superficie <span class="sc">&lt;</span> <span class="fl">26.2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 21 × 11
+    ...1 Codigo Area_natur   Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+ 1     9 SH02   de la Pampa… 2016-2… R.P. N° 0… 2016-01-29 &lt;NA&gt;       1899-12-30
+ 2    10 SH01   de Chacamar… 2002-2… R.J. Nº 4… 2002-12-20 &lt;NA&gt;       1899-12-30
+ 3    13 SN04   de Ampay     2015-2… R.P. Nº 1… 2014-12-22 &lt;NA&gt;       1899-12-30
+ 4    14 SN01   de Huayllay  2018-2… R.J. Nº 3… 2001-12-13 &lt;NA&gt;       1899-12-30
+ 5    21 PN05   Cerros de A… 2012-2… R.P. N° 0… 2012-02-17 Ley N° 30… 2015-11-11
+ 6    36 SN05   los Manglar… 2023-2… R.P. N° 0… 2017-02-28 &lt;NA&gt;       1899-12-30
+ 7    37 RC05   Machiguenga  2023-2… R.P. N° 0… 2017-02-28 &lt;NA&gt;       1899-12-30
+ 8    39 SN07   Pampa Hermo… 2022-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+ 9    40 RVS01  Laquipampa   2015-2… R.P. Nº 0… 2015-01-27 &lt;NA&gt;       1899-12-30
+10    41 RVS02  Los Pantano… 2016-2… R.J. Nº 3… 2001-12-28 &lt;NA&gt;       1899-12-30
+# ℹ 11 more rows
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="reordenar-las-filas-con-arrange" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="reordenar-las-filas-con-arrange"><span class="header-section-number">5.1.2</span> Reordenar las filas con arrange()</h3>
+<p><strong><code>arrange()** funciona de manera similar a</code>filter()` excepto que en lugar de seleccionar filas, cambia su orden. La función toma un </strong>dataframe** y un conjunto de nombres de columnas (o expresiones más complicadas) para ordenar según ellas. Si proporcionas más de un nombre de columna, cada columna adicional se utilizará para romper empates en los valores de las columnas anteriores:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(z_amortiguamiento, Codigo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 11
+    ...1 Codigo Area_natur   Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+ 1     2 BP03   de Pui Pui   2019-2… R.J. Nº 2… 2008-10-28 &lt;NA&gt;       1899-12-30
+ 2    75 BP04   San Matias-… 2023-2… R.P. N° 2… 2015-11-27 &lt;NA&gt;       1899-12-30
+ 3    53 BP05   de Pagaibam… 2017-2… R.J. Nº 3… 2001-12-13 &lt;NA&gt;       1899-12-30
+ 4    77 BP06   Alto Mayo    2023-2… R.P. Nº 0… 2023-02-27 &lt;NA&gt;       1899-12-30
+ 5    57 CC01   El Angolo    2019-2… R.P. N° 2… 2012-11-28 &lt;NA&gt;       1899-12-30
+ 6    29 CC02   Sunchubamba  &lt;NA&gt;    R.J. Nº 3… 2001-12-13 &lt;NA&gt;       1899-12-30
+ 7    26 PN01   de Cutervo   2017-2… R.P. Nº 1… 2009-09-24 &lt;NA&gt;       1899-12-30
+ 8    56 PN02   de Tingo Ma… 2022-2… R.P. N° 0… 2017-03-31 &lt;NA&gt;       1899-12-30
+ 9    24 PN03   del Manu     2019-2… R.P. Nº 0… 2013-05-22 &lt;NA&gt;       1899-12-30
+10    25 PN03   del Manu     2019-2… R.P. Nº 0… 2013-05-22 &lt;NA&gt;       1899-12-30
+# ℹ 70 more rows
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Usa <strong><code>desc()</code></strong> para reordenar por una columna en orden descendente:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(z_amortiguamiento, <span class="fu">desc</span>(Superficie))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 11
+    ...1 Codigo Area_natur   Periodo Base_legal Fecha_lega Base_leg00 Fecha_le00
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+ 1    18 PN09   Cordillera … 2017-2… R.P. Nº 0… 2011-04-14 &lt;NA&gt;       1899-12-30
+ 2    42 RN08   Pacaya-Sami… 2017-2… R.J. Nº 1… 2009-09-24 &lt;NA&gt;       1899-12-30
+ 3    51 RC02   El Sira      2015-2… R.P. Nº 0… 2009-02-27 &lt;NA&gt;       1899-12-30
+ 4    67 PN11   Alto Purús   2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+ 5    30 PN06   del Río Abi… 2014-2… R.J. Nº 2… 2006-09-27 &lt;NA&gt;       1899-12-30
+ 6    66 PN11   Alto Purús   2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       1899-12-30
+ 7    60 RP02   Subcuenca d… 2019-2… R.P. Nº 1… 2009-09-15 &lt;NA&gt;       1899-12-30
+ 8    24 PN03   del Manu     2019-2… R.P. Nº 0… 2013-05-22 &lt;NA&gt;       1899-12-30
+ 9    15 PN14   Sierra del … 2023-2… R.P. N° 2… 2016-11-07 &lt;NA&gt;       1899-12-30
+10    28 RN14   Pucacuro     2019-2… R.P. Nº 0… 2013-03-20 &lt;NA&gt;       1899-12-30
+# ℹ 70 more rows
+# ℹ 3 more variables: Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;, Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="seleccionar-columnas-con-select" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="seleccionar-columnas-con-select"><span class="header-section-number">5.1.3</span> Seleccionar columnas con select()</h3>
+<p align="center">
+<img src="fig/select.png" width="500">
+</p>
+<p>No es raro obtener conjuntos de datos con cientos de variables. En este caso, el primer desafío a menudo se reduce a las variables que realmente te interesan. <code>select()</code> te permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables.</p>
+<p>En este caso emplearemos <code>select()</code> para quedarnos con algunas columnas en específico:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar columnas por nombre</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Codigo, Area_natur)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 2
+   Codigo Area_natur                      
+   &lt;chr&gt;  &lt;chr&gt;                           
+ 1 RC04   Ashaninka                       
+ 2 BP03   de Pui Pui                      
+ 3 RN12   Matsés                          
+ 4 RN10   Allpahuayo Mishana              
+ 5 RN06   de Salinas y Aguada Blanca      
+ 6 RN02   de Junín                        
+ 7 RN01   Pampa Galeras Barbara D' Achille
+ 8 SH04   Bosque de Pomac                 
+ 9 SH02   de la Pampa de Ayacucho         
+10 SH01   de Chacamarca                   
+# ℹ 70 more rows</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar todas las columnas entre Codigo y Periodo (incluyente)</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Codigo<span class="sc">:</span>Periodo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 3
+   Codigo Area_natur                       Periodo  
+   &lt;chr&gt;  &lt;chr&gt;                            &lt;chr&gt;    
+ 1 RC04   Ashaninka                        2019-2023
+ 2 BP03   de Pui Pui                       2019-2023
+ 3 RN12   Matsés                           2023-2027
+ 4 RN10   Allpahuayo Mishana               2022-2026
+ 5 RN06   de Salinas y Aguada Blanca       2016-2020
+ 6 RN02   de Junín                         2008-2012
+ 7 RN01   Pampa Galeras Barbara D' Achille 2022-2026
+ 8 SH04   Bosque de Pomac                  2017-2021
+ 9 SH02   de la Pampa de Ayacucho          2016-2020
+10 SH01   de Chacamarca                    2002-2007
+# ℹ 70 more rows</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar todas las columnas excepto aquellas entre Codigo y Periodo (incluyente)</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, <span class="sc">-</span>(Codigo<span class="sc">:</span>Periodo))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 8
+    ...1 Base_legal       Fecha_lega Base_leg00 Fecha_le00 Base_leg01 Fecha_le01
+   &lt;dbl&gt; &lt;chr&gt;            &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;date&gt;    
+ 1     1 R.P. Nº 239-201… 2012-12-28 &lt;NA&gt;       1899-12-30 R.P. N° 0… 2019-01-29
+ 2     2 R.J. Nº 285-200… 2008-10-28 &lt;NA&gt;       1899-12-30 R.P. N° 0… 2019-01-29
+ 3     3 R.P. Nº 054-201… 2014-02-27 &lt;NA&gt;       1899-12-30 R.P N° 32… 2022-12-29
+ 4     4 R.J. Nº 159-200… 2007-07-24 &lt;NA&gt;       1899-12-30 R.P. N° 0… 2022-03-15
+ 5     5 R.J. Nº 087-200… 2007-04-26 &lt;NA&gt;       1899-12-30 R.P. N° 2… 2016-09-14
+ 6     6 R.J. Nº 145-200… 2008-06-03 &lt;NA&gt;       1899-12-30 &lt;NA&gt;       1899-12-30
+ 7     7 R.J. Nº 331-200… 2001-12-13 &lt;NA&gt;       1899-12-30 R.P. N° 0… 2022-03-02
+ 8     8 R.P. Nº 006-201… 2011-01-19 &lt;NA&gt;       1899-12-30 R.P. N° 9… 2017-03-31
+ 9     9 R.P. N° 019-201… 2016-01-29 &lt;NA&gt;       1899-12-30 &lt;NA&gt;       1899-12-30
+10    10 R.J. Nº 466-200… 2002-12-20 &lt;NA&gt;       1899-12-30 &lt;NA&gt;       1899-12-30
+# ℹ 70 more rows
+# ℹ 1 more variable: Superficie &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Hay una serie de <strong>funciones auxiliares</strong> que puedes usar dentro de <code>select()</code>:</p>
+<ul>
+<li><strong><code>starts_with("abc")</code></strong>: coincide con los nombres que comienzan con “abc”.</li>
+<li><strong><code>ends_with("xyz")</code></strong>: coincide con los nombres que terminan con “xyz”.</li>
+<li><strong><code>contains("ijk")</code></strong>: coincide con los nombres que contienen “ijk”.</li>
+<li><strong><code>matches("(.)\\1")</code></strong>: selecciona variables que coinciden con una expresión regular <strong>(regex)</strong>. Esta en particular coincide con cualquier variable que contenga caracteres repetidos.</li>
+<li><strong><code>num_range("x", 1:3)</code></strong>: coincide con x1,x2 y x3.</li>
+</ul>
+<p>Consulta <code>?select</code> para ver más detalles.</p>
+<p><code>select()</code> se puede usar para cambiar el nombre de las variables, pero rara vez es útil porque descarta todas las variables que no se mencionan explícitamente. En su lugar, utiliza <strong><code>rename()</code></strong>, que es una variante de <code>select()</code> que mantiene todas las variables que no se mencionan explícitamente:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(z_amortiguamiento)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "...1"       "Codigo"     "Area_natur" "Periodo"    "Base_legal"
+ [6] "Fecha_lega" "Base_leg00" "Fecha_le00" "Base_leg01" "Fecha_le01"
+[11] "Superficie"</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># new name = old name</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">rename</span>(z_amortiguamiento, <span class="st">"Baselegal"</span> <span class="ot">=</span> Base_legal)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "...1"       "Codigo"     "Area_natur" "Periodo"    "Baselegal" 
+ [6] "Fecha_lega" "Base_leg00" "Fecha_le00" "Base_leg01" "Fecha_le01"
+[11] "Superficie"</code></pre>
+</div>
+</div>
+<p>Otra opción es usar <code>select()</code> junto con el auxiliar <strong><code>everything()</code></strong> (todo, en inglés). Esto es útil si tienes un grupo de variables que te gustaría mover al comienzo del data frame.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Superficie, <span class="fu">everything</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 11
+   Superficie  ...1 Codigo Area_natur   Periodo Base_legal Fecha_lega Base_leg00
+        &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;        &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;     
+ 1    325684.     1 RC04   Ashaninka    2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;      
+ 2     45367.     2 BP03   de Pui Pui   2019-2… R.J. Nº 2… 2008-10-28 &lt;NA&gt;      
+ 3    231398.     3 RN12   Matsés       2023-2… R.P. Nº 0… 2014-02-27 &lt;NA&gt;      
+ 4     65957.     4 RN10   Allpahuayo … 2022-2… R.J. Nº 1… 2007-07-24 &lt;NA&gt;      
+ 5    310242.     5 RN06   de Salinas … 2016-2… R.J. Nº 0… 2007-04-26 &lt;NA&gt;      
+ 6    100858.     6 RN02   de Junín     2008-2… R.J. Nº 1… 2008-06-03 &lt;NA&gt;      
+ 7     14531.     7 RN01   Pampa Galer… 2022-2… R.J. Nº 3… 2001-12-13 &lt;NA&gt;      
+ 8      9291.     8 SH04   Bosque de P… 2017-2… R.P. Nº 0… 2011-01-19 &lt;NA&gt;      
+ 9       429.     9 SH02   de la Pampa… 2016-2… R.P. N° 0… 2016-01-29 &lt;NA&gt;      
+10      1332.    10 SH01   de Chacamar… 2002-2… R.J. Nº 4… 2002-12-20 &lt;NA&gt;      
+# ℹ 70 more rows
+# ℹ 3 more variables: Fecha_le00 &lt;date&gt;, Base_leg01 &lt;chr&gt;, Fecha_le01 &lt;date&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="añadir-nuevas-variables-con-mutate" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="añadir-nuevas-variables-con-mutate"><span class="header-section-number">5.1.4</span> Añadir nuevas variables con mutate()</h3>
+<p align="center">
+<img src="fig/mutate.png" width="500">
+</p>
+<p>Además de seleccionar conjuntos de columnas existentes, a menudo es útil crear nuevas columnas en función de columnas existentes. Ese es el trabajo de <strong><code>mutate()</code></strong> (del inglés mutar o transformar).</p>
+<p><strong><code>mutate()</code></strong> siempre agrega nuevas columnas al final de un conjunto de datos, así que comenzaremos creando un conjunto de datos más pequeño para que podamos ver las nuevas variables. Recuerda que cuando usas <strong>RStudio</strong>, la manera más fácil de ver todas las columnas es <strong>View()</strong>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_sl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  Codigo<span class="sc">:</span>Periodo,</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contains</span>(<span class="st">"leg"</span>),</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  Superficie</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento_sl,</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">area_ha =</span> Superficie <span class="sc">/</span> <span class="dv">10000</span>,</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">inicio_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">1</span>],</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">fin_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">2</span>]</span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 11
+   Codigo Area_natur         Periodo Base_legal Fecha_lega Base_leg00 Base_leg01
+   &lt;chr&gt;  &lt;chr&gt;              &lt;chr&gt;   &lt;chr&gt;      &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;     
+ 1 RC04   Ashaninka          2019-2… R.P. Nº 2… 2012-12-28 &lt;NA&gt;       R.P. N° 0…
+ 2 BP03   de Pui Pui         2019-2… R.J. Nº 2… 2008-10-28 &lt;NA&gt;       R.P. N° 0…
+ 3 RN12   Matsés             2023-2… R.P. Nº 0… 2014-02-27 &lt;NA&gt;       R.P N° 32…
+ 4 RN10   Allpahuayo Mishana 2022-2… R.J. Nº 1… 2007-07-24 &lt;NA&gt;       R.P. N° 0…
+ 5 RN06   de Salinas y Agua… 2016-2… R.J. Nº 0… 2007-04-26 &lt;NA&gt;       R.P. N° 2…
+ 6 RN02   de Junín           2008-2… R.J. Nº 1… 2008-06-03 &lt;NA&gt;       &lt;NA&gt;      
+ 7 RN01   Pampa Galeras Bar… 2022-2… R.J. Nº 3… 2001-12-13 &lt;NA&gt;       R.P. N° 0…
+ 8 SH04   Bosque de Pomac    2017-2… R.P. Nº 0… 2011-01-19 &lt;NA&gt;       R.P. N° 9…
+ 9 SH02   de la Pampa de Ay… 2016-2… R.P. N° 0… 2016-01-29 &lt;NA&gt;       &lt;NA&gt;      
+10 SH01   de Chacamarca      2002-2… R.J. Nº 4… 2002-12-20 &lt;NA&gt;       &lt;NA&gt;      
+# ℹ 70 more rows
+# ℹ 4 more variables: Superficie &lt;dbl&gt;, area_ha &lt;dbl&gt;, inicio_legal &lt;chr&gt;,
+#   fin_legal &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Si solo quieres conservar las nuevas variables, usa <strong><code>transmute()</code></strong>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">transmute</span>(</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento_sl,</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">area_ha =</span> Superficie <span class="sc">/</span> <span class="dv">10000</span>,</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">inicio_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">1</span>],</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fin_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">2</span>]</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 80 × 3
+   area_ha inicio_legal fin_legal
+     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;    
+ 1 32.6    2019         2023     
+ 2  4.54   2019         2023     
+ 3 23.1    2023         2027     
+ 4  6.60   2022         2026     
+ 5 31.0    2016         2020     
+ 6 10.1    2008         2012     
+ 7  1.45   2022         2026     
+ 8  0.929  2017         2021     
+ 9  0.0429 2016         2020     
+10  0.133  2002         2007     
+# ℹ 70 more rows</code></pre>
+</div>
+</div>
+<section id="funciones-de-creación-útiles" class="level4" data-number="5.1.4.1">
+<h4 data-number="5.1.4.1" class="anchored" data-anchor-id="funciones-de-creación-útiles"><span class="header-section-number">5.1.4.1</span> Funciones de creación útiles</h4>
+<p>Hay muchas funciones para crear nuevas variables que puedes usar con <code>mutate()</code>. La propiedad clave es que la función debe ser vectorizada: debe tomar un vector de valores como input, y devolver un vector con el mismo número de valores como output. No hay forma de enumerar todas las posibles funciones que podrías usar, pero aquí hay una selección de funciones que frecuentemente son útiles:</p>
+<ul>
+<li><p>Operadores aritméticos: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>^</code>. Todos están vectorizados usando las llamadas <strong>“reglas de reciclaje”</strong>. Si un parámetro es más corto que el otro, se extenderá automáticamente para tener la misma longitud. Esto es muy útil cuando uno de los argumentos es un solo número: <code>Superficie / 100000</code>, <code>hours * 60 + minute</code>, etc. Los operadores aritméticos también son útiles junto con las funciones de agregar que aprenderás más adelante. Por ejemplo, <code>x / sum(x)</code> calcula la proporción de un total, y <code>y - mean(y)</code> calcula la diferencia de la media.</p></li>
+<li><p><strong>Aritmética modular</strong>: <strong><code>%/%</code></strong> (división entera) y <strong><code>%%</code></strong> (resto), donde <code>x == y * (x %/% y) + (x %% y)</code>. La aritmética modular es una herramienta útil porque te permite dividir enteros en partes.</p></li>
+<li><p><strong>Logaritmos:</strong> <code>log()</code>, <code>log2()</code>, <code>log10()</code>. Los logaritmos son increíblemente útiles como transformación para trabajar con datos con múltiples órdenes de magnitud. También convierten las relaciones multiplicativas en aditivas, bastante empleados cuando se trabajan con modelos. En igualdad de condiciones, recomendamos usar <code>log2()</code> porque es más fácil de interpretar: una diferencia de 1 en la escala de registro corresponde a la duplicación de la escala original y una diferencia de -1 corresponde a dividir a la mitad.</p></li>
+<li><p><strong>Rezagos:</strong> <code>lead()</code> y <code>lag()</code> te permiten referirte a un valor adelante o un valor atrás (con rezago). Esto te permite calcular las diferencias móviles (por ejemplo, <code>x - lag(x)</code>) o encontrar cuándo cambian los valores <code>(x! = lag (x))</code>. Estos comandos son más útiles cuando se utilizan junto con <code>group_by()</code>, algo que aprenderás en breve.</p></li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lag</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] NA  1  2  3  4  5  6  7  8  9</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lead</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  2  3  4  5  6  7  8  9 10 NA</code></pre>
+</div>
+</div>
+<ul>
+<li><strong>Agregados acumulativos y móviles:</strong> R proporciona funciones para ejecutar sumas, productos, mínimos y máximos: <code>cumsum()</code>, <code>cumprod()</code>, <code>cummin()</code>, <code>cummax()</code>; <strong>dplyr</strong>, por su parte, proporciona <code>cummean()</code> para las medias acumuladas. Si necesitas calcular agregados móviles (es decir, una suma calculada en una ventana móvil), prueba el paquete <strong>RcppRoll</strong>.</li>
+</ul>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>x</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1]  1  3  6 10 15 21 28 36 45 55</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cummean</span>(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1.0 1.5 2.0 2.5 3.0 3.5 4.0 4.5 5.0 5.5</code></pre>
+</div>
+</div>
+<ul>
+<li>Comparaciones lógicas: <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>, <code>!=</code>. Si estás haciendo una secuencia compleja de operaciones lógicas, es a menudo una buena idea almacenar los valores provisionales en nuevas variables para que puedas comprobar que cada paso funciona como se espera.</li>
+</ul>
+</section>
+</section>
+<section id="resúmenes-agrupados-con-summarise" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="resúmenes-agrupados-con-summarise"><span class="header-section-number">5.1.5</span> Resúmenes agrupados con summarise()</h3>
+<p>El último verbo clave es <strong><code>summarise()</code></strong> (resumir, en inglés). Se encarga de colapsar un data frame en una sola fila:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(z_amortiguamiento, <span class="at">area_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  area_mean
+      &lt;dbl&gt;
+1   181865.</code></pre>
+</div>
+</div>
+<p>En caso se requiera categorizar una columna utilizaremos <code>case_when()</code> dentro de la función <code>mutate()</code>.</p>
+<p><code>summarise()</code> no es muy útil a menos que lo enlacemos con <code>group_by()</code>. Esto cambia la unidad de análisis del conjunto de datos completo a grupos individuales. Luego, cuando uses los verbos <strong>dplyr</strong> en un data frame agrupado, estos se aplicarán automáticamente <strong>“por grupo”</strong>. Por ejemplo, si aplicamos exactamente el mismo código a un dataframe agrupado por fecha, obtenemos el retraso promedio por fecha:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_g <span class="ot">&lt;-</span> <span class="fu">mutate</span>(z_amortiguamiento, </span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">Grupo =</span> <span class="fu">case_when</span>(</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&lt;</span> <span class="dv">50000</span> <span class="sc">~</span> <span class="st">"Grupo1"</span>,</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">50000</span> <span class="sc">&amp;</span> Superficie <span class="sc">&lt;=</span> <span class="dv">100000</span> <span class="sc">~</span> <span class="st">"Grupo2"</span>,</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">100000</span> <span class="sc">&amp;</span> Superficie <span class="sc">&lt;=</span> <span class="dv">200000</span> <span class="sc">~</span> <span class="st">"Grupo3"</span>,</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">200000</span> <span class="sc">~</span> <span class="st">"Grupo4"</span></span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>       ))</span>
+<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>by_group <span class="ot">&lt;-</span> <span class="fu">group_by</span>(z_amortiguamiento_g, Grupo)</span>
+<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(by_group, <span class="at">sup_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 2
+  Grupo  sup_mean
+  &lt;chr&gt;     &lt;dbl&gt;
+1 Grupo1   12494.
+2 Grupo2   68255.
+3 Grupo3  144261.
+4 Grupo4  513469.</code></pre>
+</div>
+</div>
+<p>Juntos <code>group_by()</code> y <code>summarise()</code> proporcionan una de las herramientas que más comúnmente usarás cuando trabajes con dplyr: resúmenes agrupados. Pero antes de ir más allá con esto, tenemos que introducir una idea nueva y poderosa: el <code>pipe</code> (pronunciado /paip/, que en inglés significa ducto o tubería).</p>
+</section>
+</section>
+<section id="combinación-de-múltiples-operaciones-con-el-pipe" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="combinación-de-múltiples-operaciones-con-el-pipe"><span class="header-section-number">5.2</span> Combinación de múltiples operaciones con el pipe</h2>
+<p>Imagina que queremos agrupar por grupos y generar un resumen de cuántos elementos y la media de estos hay en cada uno de ellos.</p>
+<p>la relación entre la distancia y el atraso promedio para cada ubicación. Usando lo que sabes acerca de dplyr, podrías escribir un código como este:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_r <span class="ot">&lt;-</span> z_amortiguamiento_g <span class="sc">%&gt;%</span> </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Grupo) <span class="sc">%&gt;%</span> </span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cantidad =</span> <span class="fu">n</span>(),</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">sup_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> z_amortiguamiento_r, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Grupo, <span class="at">y =</span> cantidad)) <span class="sc">+</span></span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">size =</span> cantidad), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'loess' and formula = 'y ~ x'</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="c04_tidyverse_1_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Se puede resumir en tres pasos para preparar la información:</p>
+<ol type="1">
+<li>Agrupar los datos según el criterio a analizar.</li>
+<li>Resumir para calcular la cantidad de cada grupo y el promedio por cada uno de ellos.</li>
+<li>Filtrar para eliminar datos ruidosos.</li>
+</ol>
+<p>Lo que permite el uso del <code>pipe</code> es hacer una secuencia más fácil de leer. Se puede leer como una serie de declaraciones imperativas: <strong>agrupa</strong>, luego <strong>resume</strong> y luego <strong>filtra</strong>. Como sugiere esta lectura, una buena forma de pronunciar <strong><code>%&gt;%</code></strong> cuando se lee el código es <strong>“luego”</strong>.</p>
+<p>Lo que ocurre detrás del código, es que <strong>x %&gt;% f(y)</strong> se convierte en <strong>f(x, y)</strong>, y <strong>x %&gt;% f(y) %&gt;% g(z)</strong> se convierte en <strong>g(f(x, y), z)</strong> y así sucesivamente. Puedes usar el <strong><em>pipe</em></strong> para reescribir múltiples operaciones de forma que puedas leer de izquierda a derecha, de arriba hacia abajo. <strong>Usaremos pipes con frecuencia a partir de ahora porque mejora considerablemente la legibilidad del código</strong>.</p>
+<p>Trabajar con el pipe es uno de los criterios clave para pertenecer al tidyverse. La única excepción es ggplot2: se escribió antes de que se descubriera el pipe. Lamentablemente, la siguiente iteración de ggplot2, ggvis, que sí utiliza el pipe, aún no está lista para el horario estelar.</p>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./c03_intro_R2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Control de Flujo y funciones</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb66" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Manipulación de datos con tidyverse</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>Esta sección muestra el ecosistema **tidyverse**, compuesto de un conjunto de paquetes que comparten una filosofía común de programación de datos y R, y están diseñados para trabajar juntos de forma natural.</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>Puedes instalar tidyverse completo con una sola línea de código:</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a><span class="in">```{r message=FALSE, warning=FALSE, eval=FALSE}</span></span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-11"><a href="#cb66-11" aria-hidden="true" tabindex="-1"></a>En su computadora, escriba esta línea de código y ejecutelo. R descargará los paquetes de CRAN y los instalará en su computadora.</span>
+<span id="cb66-12"><a href="#cb66-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-13"><a href="#cb66-13" aria-hidden="true" tabindex="-1"></a><span class="in">```{r tidyverse, message=FALSE, warning=FALSE}</span></span>
+<span id="cb66-14"><a href="#cb66-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb66-15"><a href="#cb66-15" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-16"><a href="#cb66-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-17"><a href="#cb66-17" aria-hidden="true" tabindex="-1"></a>Esto le indica que tidyverse está cargando los paquetes **ggplot2, tibble, tidyr, readr, purrr y dplyr**. Estos consideran los núcleo del tidyverse porque los usará en casi todos los análisis.</span>
+<span id="cb66-18"><a href="#cb66-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-19"><a href="#cb66-19" aria-hidden="true" tabindex="-1"></a>Los paquetes del tidyverse cambian con bastante frecuencia. Puede ver si hay actualizaciones disponibles y, opcionalmente, instalarlas, ejecutando **`tidyverse_update()`**.</span>
+<span id="cb66-20"><a href="#cb66-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-21"><a href="#cb66-21" aria-hidden="true" tabindex="-1"></a>Toma nota del mensaje de conflictos que se imprime cuando cargas el tidyverse. Te dice que dplyr sobrescribe algunas funciones en base R. Si desea usar la versión base de estas funciones después de cargar dplyr, deberá usar sus nombres completos: **`stats::filter()`** y **`stats::lag()`**</span>
+<span id="cb66-22"><a href="#cb66-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-23"><a href="#cb66-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Dplyr básico</span></span>
+<span id="cb66-24"><a href="#cb66-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-25"><a href="#cb66-25" aria-hidden="true" tabindex="-1"></a>La visualización es una herramienta importante para la generación de información, pero es raro obtener los datos exactamente como se necesitan. A menudo, necesitará crear algunas variables o resúmenes nuevos, o tal vez solo desee cambiar el nombre de las variables o reordenar las observaciones para que sea un poco más fácil trabajar con los datos. Para más detalles sobre cómo transformar sus datos es empleando el <span class="co">[</span><span class="ot">**paquete dplyr**</span><span class="co">](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)</span></span>
+<span id="cb66-26"><a href="#cb66-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-27"><a href="#cb66-27" aria-hidden="true" tabindex="-1"></a>Para explorar los verbos básicos de manipulación de datos de **dplyr**, usaremos la base de datos de zonas de amortiguamiento. Este marco de datos contiene. Los datos provienen de la <span class="co">[</span><span class="ot">Servicio Nacional de Áreas Naturales Protegidas (SERNANP)</span><span class="co">]</span>{style="color:blue"}</span>
+<span id="cb66-28"><a href="#cb66-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-29"><a href="#cb66-29" aria-hidden="true" tabindex="-1"></a><span class="in">```{r warning=FALSE}</span></span>
+<span id="cb66-30"><a href="#cb66-30" aria-hidden="true" tabindex="-1"></a><span class="co"># datos será un 'data frame'</span></span>
+<span id="cb66-31"><a href="#cb66-31" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">'data/zon_amortiguamiento.csv'</span>)</span>
+<span id="cb66-32"><a href="#cb66-32" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(z_amortiguamiento)</span>
+<span id="cb66-33"><a href="#cb66-33" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-34"><a href="#cb66-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-35"><a href="#cb66-35" aria-hidden="true" tabindex="-1"></a>En esta sección se muestran cinco funciones clave de **dplyr** que le permiten resolver la gran mayoría de sus desafíos de manipulación de datos:</span>
+<span id="cb66-36"><a href="#cb66-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-37"><a href="#cb66-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Elija observaciones por sus valores (**`filter()`**).</span>
+<span id="cb66-38"><a href="#cb66-38" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Reordenar las filas (**`arrange()`**).</span>
+<span id="cb66-39"><a href="#cb66-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Elija las variables por sus nombres (**`select()`**).</span>
+<span id="cb66-40"><a href="#cb66-40" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Crear nuevas variables con funciones de variables existentes (**`mutate()`**).</span>
+<span id="cb66-41"><a href="#cb66-41" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Colapsar muchos valores en un solo resumen (**`summarize()`**)</span>
+<span id="cb66-42"><a href="#cb66-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-43"><a href="#cb66-43" aria-hidden="true" tabindex="-1"></a>Todos estos se pueden usar junto con **`group_by()`**, que cambia el alcance de cada función de operar en todo el conjunto de datos a operar en él grupo por grupo. Estas seis funciones proporcionan los **verbos** para un lenguaje de manipulación de datos.</span>
+<span id="cb66-44"><a href="#cb66-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-45"><a href="#cb66-45" aria-hidden="true" tabindex="-1"></a>Todos los verbos funcionan de manera similar:</span>
+<span id="cb66-46"><a href="#cb66-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-47"><a href="#cb66-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>El primer argumento es un data.frame(marco de datos).</span>
+<span id="cb66-48"><a href="#cb66-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Los argumentos siguientes describen qué hacer con el marco de datos, utilizando los nombres de las variables **(sin comillas)**.</span>
+<span id="cb66-49"><a href="#cb66-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>El resultado es un nuevo dataframe.</span>
+<span id="cb66-50"><a href="#cb66-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-51"><a href="#cb66-51" aria-hidden="true" tabindex="-1"></a>Juntas, estas propiedades hacen que sea fácil encadenar varios pasos simples para lograr un resultado complejo. Profundicemos y veamos cómo funcionan estos verbos.</span>
+<span id="cb66-52"><a href="#cb66-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-53"><a href="#cb66-53" aria-hidden="true" tabindex="-1"></a><span class="fu">### Filtrar filas con filter()</span></span>
+<span id="cb66-54"><a href="#cb66-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-55"><a href="#cb66-55" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;p</span> <span class="er">align</span><span class="ot">=</span><span class="st">"center"</span><span class="kw">&gt;</span></span>
+<span id="cb66-56"><a href="#cb66-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-57"><a href="#cb66-57" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"fig/filter.png"</span> <span class="er">width</span><span class="ot">=</span><span class="st">"500"</span><span class="kw">/&gt;</span></span>
+<span id="cb66-58"><a href="#cb66-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-59"><a href="#cb66-59" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/p&gt;</span></span>
+<span id="cb66-60"><a href="#cb66-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-61"><a href="#cb66-61" aria-hidden="true" tabindex="-1"></a>**Filter()** te permite filtrar un subconjunto de observaciones según sus valores. El primer argumento es el nombre del data frame. El segundo y los siguientes argumentos son las expresiones que lo filtran.</span>
+<span id="cb66-62"><a href="#cb66-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-63"><a href="#cb66-63" aria-hidden="true" tabindex="-1"></a>Por ejemplo, podemos seleccionar todas las ZA con una **Superficie mayor a 400000.00** con:</span>
+<span id="cb66-64"><a href="#cb66-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-67"><a href="#cb66-67" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-68"><a href="#cb66-68" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span> )</span>
+<span id="cb66-69"><a href="#cb66-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-70"><a href="#cb66-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-71"><a href="#cb66-71" aria-hidden="true" tabindex="-1"></a>Cuando ejecutas esa línea de código, dplyr ejecuta la operación de filtrado y devuelve un nuevo data frame. Las funciones de dplyr nunca modifican su input, por lo que si deseas guardar el resultado, necesitarás usar el operador de asignación, <span class="sc">\&lt;</span>-:</span>
+<span id="cb66-72"><a href="#cb66-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-75"><a href="#cb66-75" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-76"><a href="#cb66-76" aria-hidden="true" tabindex="-1"></a>filter01 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span> )</span>
+<span id="cb66-77"><a href="#cb66-77" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-78"><a href="#cb66-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-79"><a href="#cb66-79" aria-hidden="true" tabindex="-1"></a>De otro modo usar el operador **"%\&gt;%"** de la librería **magrittr**.</span>
+<span id="cb66-80"><a href="#cb66-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-81"><a href="#cb66-81" aria-hidden="true" tabindex="-1"></a>R imprime los resultados o los guarda en una variable. Si desea hacer ambas cosas, puede envolver la tarea **entre paréntesis**:</span>
+<span id="cb66-82"><a href="#cb66-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-83"><a href="#cb66-83" aria-hidden="true" tabindex="-1"></a><span class="in">```{r df-drop-ok, class.source="bg-success"}</span></span>
+<span id="cb66-84"><a href="#cb66-84" aria-hidden="true" tabindex="-1"></a>(filter02 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span>))</span>
+<span id="cb66-85"><a href="#cb66-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-86"><a href="#cb66-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-87"><a href="#cb66-87" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Comparaciones</span></span>
+<span id="cb66-88"><a href="#cb66-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-89"><a href="#cb66-89" aria-hidden="true" tabindex="-1"></a>Para usar el filtrado de manera efectiva, debes saber cómo seleccionar las observaciones que deseas utilizando los operadores de comparación. R proporciona el conjunto estándar: <span class="in">`&gt;`</span>, <span class="in">`&gt;=`</span>, <span class="in">`&lt;`</span>, <span class="in">`&lt;=`</span>, <span class="in">`!=`</span> (no igual) y <span class="in">`==`</span> (igual).</span>
+<span id="cb66-90"><a href="#cb66-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-91"><a href="#cb66-91" aria-hidden="true" tabindex="-1"></a>Cuando comienzas con R, el error más fácil de cometer es usar <span class="in">`=`</span> en lugar de <span class="in">`==`</span> cuando se busca igualdad. Cuando esto suceda, obtendrás un error informativo:</span>
+<span id="cb66-92"><a href="#cb66-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-93"><a href="#cb66-93" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo=TRUE, message=TRUE, warning=TRUE, error=TRUE}</span></span>
+<span id="cb66-94"><a href="#cb66-94" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,Superficie <span class="sc">&gt;</span> <span class="fl">400000.00</span>)</span>
+<span id="cb66-95"><a href="#cb66-95" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-96"><a href="#cb66-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-97"><a href="#cb66-97" aria-hidden="true" tabindex="-1"></a>Hay otro problema común que puedes encontrar al usar <span class="in">`==`</span>: los números de coma flotante. **¡Estos resultados pueden sorprenderte!**</span>
+<span id="cb66-98"><a href="#cb66-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-101"><a href="#cb66-101" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-102"><a href="#cb66-102" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span> <span class="sc">==</span> <span class="dv">2</span></span>
+<span id="cb66-103"><a href="#cb66-103" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">/</span> <span class="dv">49</span> <span class="sc">*</span> <span class="dv">49</span> <span class="sc">==</span> <span class="dv">1</span></span>
+<span id="cb66-104"><a href="#cb66-104" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-105"><a href="#cb66-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-106"><a href="#cb66-106" aria-hidden="true" tabindex="-1"></a>Las computadoras usan **aritmética de precisión finita** (obviamente, **NO** pueden **almacenar** una **cantidad infinita de dígitos**), así que recuerda que cada número que observas es una aproximación. En lugar de confiar en **`==`**, usa **`near()`** (cercano, en inglés):</span>
+<span id="cb66-107"><a href="#cb66-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-110"><a href="#cb66-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-111"><a href="#cb66-111" aria-hidden="true" tabindex="-1"></a><span class="fu">near</span>(<span class="fu">sqrt</span>(<span class="dv">2</span>)<span class="sc">^</span><span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb66-112"><a href="#cb66-112" aria-hidden="true" tabindex="-1"></a><span class="fu">near</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">49</span> <span class="sc">*</span> <span class="dv">49</span>, <span class="dv">1</span>)</span>
+<span id="cb66-113"><a href="#cb66-113" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-114"><a href="#cb66-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-115"><a href="#cb66-115" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Operadores lógicos</span></span>
+<span id="cb66-116"><a href="#cb66-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-117"><a href="#cb66-117" aria-hidden="true" tabindex="-1"></a>Si tienes múltiples argumentos para **`filter()`** estos se combinan con **"y"**: cada expresión debe ser verdadera para que una fila se incluya en el output. Para otros tipos de combinaciones necesitarás usar operadores Booleanos: **&amp; es "y"**, **\| es "o"**, y **! es "no"**. La siguiente figura muestra el conjunto completo de operaciones **Booleanas**.</span>
+<span id="cb66-118"><a href="#cb66-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-119"><a href="#cb66-119" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"https://es.r4ds.hadley.nz/diagrams_w_text_as_path/es/transform-logical.svg"</span> <span class="er">width</span><span class="ot">=</span><span class="st">"500"</span><span class="kw">/&gt;</span></span>
+<span id="cb66-120"><a href="#cb66-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-121"><a href="#cb66-121" aria-hidden="true" tabindex="-1"></a>El siguiente código sirve para encontrar todas las areas iguales a <span class="in">`310242.10`</span> o <span class="in">`1880.50`</span>:</span>
+<span id="cb66-122"><a href="#cb66-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-125"><a href="#cb66-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-126"><a href="#cb66-126" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">==</span> <span class="fl">310242.10</span> <span class="sc">|</span> Superficie <span class="sc">==</span> <span class="fl">1880.50</span>)</span>
+<span id="cb66-127"><a href="#cb66-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-128"><a href="#cb66-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-129"><a href="#cb66-129" aria-hidden="true" tabindex="-1"></a>El orden de las operaciones es importante. No puedes escribir **`filter(z_amortiguamiento, Superficie == (310242.10 | 1880.50))`**. Si quieres saber si es uno u otro valor, se puede resolver con **`x %in% y`** (es decir, x en y). Esto **seleccionará cada fila donde x es uno de los valores en y**. Podríamos usarlo para reescribir el código de arriba:</span>
+<span id="cb66-130"><a href="#cb66-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-133"><a href="#cb66-133" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-134"><a href="#cb66-134" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento, Superficie <span class="sc">%in%</span> <span class="fu">c</span>(<span class="fl">310242.10</span>, <span class="fl">1880.50</span>))</span>
+<span id="cb66-135"><a href="#cb66-135" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-136"><a href="#cb66-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-137"><a href="#cb66-137" aria-hidden="true" tabindex="-1"></a>A veces puedes simplificar subconjuntos complicados al recordar **la ley de De Morgan**: **!(x &amp; y)** es lo mismo que **!x \| !y**, y **!(x \| y)** es lo mismo que <span class="sc">\*\*</span>!x &amp; !y<span class="sc">\*</span>. Por ejemplo, si deseas encontrar areas mayores a <span class="in">`26.2`</span> y menores <span class="in">`8652.24`</span> .</span>
+<span id="cb66-138"><a href="#cb66-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-141"><a href="#cb66-141" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-142"><a href="#cb66-142" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">filter</span>(z_amortiguamiento,<span class="sc">!</span>(Superficie <span class="sc">&gt;</span> <span class="fl">8652.24</span>  <span class="sc">|</span> Superficie <span class="sc">&lt;</span> <span class="fl">26.2</span>))</span>
+<span id="cb66-143"><a href="#cb66-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-144"><a href="#cb66-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-145"><a href="#cb66-145" aria-hidden="true" tabindex="-1"></a><span class="fu">### Reordenar las filas con arrange()</span></span>
+<span id="cb66-146"><a href="#cb66-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-147"><a href="#cb66-147" aria-hidden="true" tabindex="-1"></a>**`arrange()** funciona de manera similar a`filter()\` excepto que en lugar de seleccionar filas, cambia su orden. La función toma un **dataframe** y un conjunto de nombres de columnas (o expresiones más complicadas) para ordenar según ellas. Si proporcionas más de un nombre de columna, cada columna adicional se utilizará para romper empates en los valores de las columnas anteriores:</span>
+<span id="cb66-148"><a href="#cb66-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-151"><a href="#cb66-151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-152"><a href="#cb66-152" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(z_amortiguamiento, Codigo)</span>
+<span id="cb66-153"><a href="#cb66-153" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-154"><a href="#cb66-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-155"><a href="#cb66-155" aria-hidden="true" tabindex="-1"></a>Usa **`desc()`** para reordenar por una columna en orden descendente:</span>
+<span id="cb66-156"><a href="#cb66-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-159"><a href="#cb66-159" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-160"><a href="#cb66-160" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(z_amortiguamiento, <span class="fu">desc</span>(Superficie))</span>
+<span id="cb66-161"><a href="#cb66-161" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-162"><a href="#cb66-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-163"><a href="#cb66-163" aria-hidden="true" tabindex="-1"></a><span class="fu">### Seleccionar columnas con select()</span></span>
+<span id="cb66-164"><a href="#cb66-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-165"><a href="#cb66-165" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;p</span> <span class="er">align</span><span class="ot">=</span><span class="st">"center"</span><span class="kw">&gt;</span></span>
+<span id="cb66-166"><a href="#cb66-166" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"fig/select.png"</span> <span class="er">width</span><span class="ot">=</span><span class="st">"500"</span><span class="kw">/&gt;</span></span>
+<span id="cb66-167"><a href="#cb66-167" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/p&gt;</span></span>
+<span id="cb66-168"><a href="#cb66-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-169"><a href="#cb66-169" aria-hidden="true" tabindex="-1"></a>No es raro obtener conjuntos de datos con cientos de variables. En este caso, el primer desafío a menudo se reduce a las variables que realmente te interesan. <span class="in">`select()`</span> te permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables.</span>
+<span id="cb66-170"><a href="#cb66-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-171"><a href="#cb66-171" aria-hidden="true" tabindex="-1"></a>En este caso emplearemos <span class="in">`select()`</span> para quedarnos con algunas columnas en específico:</span>
+<span id="cb66-172"><a href="#cb66-172" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-175"><a href="#cb66-175" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-176"><a href="#cb66-176" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar columnas por nombre</span></span>
+<span id="cb66-177"><a href="#cb66-177" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Codigo, Area_natur)</span>
+<span id="cb66-178"><a href="#cb66-178" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar todas las columnas entre Codigo y Periodo (incluyente)</span></span>
+<span id="cb66-179"><a href="#cb66-179" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Codigo<span class="sc">:</span>Periodo)</span>
+<span id="cb66-180"><a href="#cb66-180" aria-hidden="true" tabindex="-1"></a><span class="co"># Seleccionar todas las columnas excepto aquellas entre Codigo y Periodo (incluyente)</span></span>
+<span id="cb66-181"><a href="#cb66-181" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, <span class="sc">-</span>(Codigo<span class="sc">:</span>Periodo))</span>
+<span id="cb66-182"><a href="#cb66-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-183"><a href="#cb66-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-184"><a href="#cb66-184" aria-hidden="true" tabindex="-1"></a>Hay una serie de **funciones auxiliares** que puedes usar dentro de <span class="in">`select()`</span>:</span>
+<span id="cb66-185"><a href="#cb66-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-186"><a href="#cb66-186" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`starts_with("abc")`**: coincide con los nombres que comienzan con "abc".</span>
+<span id="cb66-187"><a href="#cb66-187" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`ends_with("xyz")`**: coincide con los nombres que terminan con "xyz".</span>
+<span id="cb66-188"><a href="#cb66-188" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`contains("ijk")`**: coincide con los nombres que contienen "ijk".</span>
+<span id="cb66-189"><a href="#cb66-189" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`matches("(.)\\1")`**: selecciona variables que coinciden con una expresión regular **(regex)**. Esta en particular coincide con cualquier variable que contenga caracteres repetidos.</span>
+<span id="cb66-190"><a href="#cb66-190" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**`num_range("x", 1:3)`**: coincide con x1,x2 y x3.</span>
+<span id="cb66-191"><a href="#cb66-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-192"><a href="#cb66-192" aria-hidden="true" tabindex="-1"></a>Consulta <span class="in">`?select`</span> para ver más detalles.</span>
+<span id="cb66-193"><a href="#cb66-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-194"><a href="#cb66-194" aria-hidden="true" tabindex="-1"></a><span class="in">`select()`</span> se puede usar para cambiar el nombre de las variables, pero rara vez es útil porque descarta todas las variables que no se mencionan explícitamente. En su lugar, utiliza **`rename()`**, que es una variante de <span class="in">`select()`</span> que mantiene todas las variables que no se mencionan explícitamente:</span>
+<span id="cb66-195"><a href="#cb66-195" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-198"><a href="#cb66-198" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-199"><a href="#cb66-199" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(z_amortiguamiento)</span>
+<span id="cb66-200"><a href="#cb66-200" aria-hidden="true" tabindex="-1"></a><span class="co"># new name = old name</span></span>
+<span id="cb66-201"><a href="#cb66-201" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">rename</span>(z_amortiguamiento, <span class="st">"Baselegal"</span> <span class="ot">=</span> Base_legal)</span>
+<span id="cb66-202"><a href="#cb66-202" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span>
+<span id="cb66-203"><a href="#cb66-203" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-204"><a href="#cb66-204" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-205"><a href="#cb66-205" aria-hidden="true" tabindex="-1"></a>Otra opción es usar <span class="in">`select()`</span> junto con el auxiliar **`everything()`** (todo, en inglés). Esto es útil si tienes un grupo de variables que te gustaría mover al comienzo del data frame.</span>
+<span id="cb66-206"><a href="#cb66-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-209"><a href="#cb66-209" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-210"><a href="#cb66-210" aria-hidden="true" tabindex="-1"></a>dplyr<span class="sc">::</span><span class="fu">select</span>(z_amortiguamiento, Superficie, <span class="fu">everything</span>())</span>
+<span id="cb66-211"><a href="#cb66-211" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-212"><a href="#cb66-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-213"><a href="#cb66-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### Añadir nuevas variables con mutate()</span></span>
+<span id="cb66-214"><a href="#cb66-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-215"><a href="#cb66-215" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;p</span> <span class="er">align</span><span class="ot">=</span><span class="st">"center"</span><span class="kw">&gt;</span></span>
+<span id="cb66-216"><a href="#cb66-216" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;img</span> <span class="er">src</span><span class="ot">=</span><span class="st">"fig/mutate.png"</span> <span class="er">width</span><span class="ot">=</span><span class="st">"500"</span><span class="kw">/&gt;</span></span>
+<span id="cb66-217"><a href="#cb66-217" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;/p&gt;</span></span>
+<span id="cb66-218"><a href="#cb66-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-219"><a href="#cb66-219" aria-hidden="true" tabindex="-1"></a>Además de seleccionar conjuntos de columnas existentes, a menudo es útil crear nuevas columnas en función de columnas existentes. Ese es el trabajo de **`mutate()`** (del inglés mutar o transformar).</span>
+<span id="cb66-220"><a href="#cb66-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-221"><a href="#cb66-221" aria-hidden="true" tabindex="-1"></a>**`mutate()`** siempre agrega nuevas columnas al final de un conjunto de datos, así que comenzaremos creando un conjunto de datos más pequeño para que podamos ver las nuevas variables. Recuerda que cuando usas **RStudio**, la manera más fácil de ver todas las columnas es **View()**.</span>
+<span id="cb66-222"><a href="#cb66-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-225"><a href="#cb66-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-226"><a href="#cb66-226" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_sl <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(</span>
+<span id="cb66-227"><a href="#cb66-227" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento,</span>
+<span id="cb66-228"><a href="#cb66-228" aria-hidden="true" tabindex="-1"></a>  Codigo<span class="sc">:</span>Periodo,</span>
+<span id="cb66-229"><a href="#cb66-229" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contains</span>(<span class="st">"leg"</span>),</span>
+<span id="cb66-230"><a href="#cb66-230" aria-hidden="true" tabindex="-1"></a>  Superficie</span>
+<span id="cb66-231"><a href="#cb66-231" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-232"><a href="#cb66-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-233"><a href="#cb66-233" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(</span>
+<span id="cb66-234"><a href="#cb66-234" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento_sl,</span>
+<span id="cb66-235"><a href="#cb66-235" aria-hidden="true" tabindex="-1"></a>  <span class="at">area_ha =</span> Superficie <span class="sc">/</span> <span class="dv">10000</span>,</span>
+<span id="cb66-236"><a href="#cb66-236" aria-hidden="true" tabindex="-1"></a>  <span class="at">inicio_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">1</span>],</span>
+<span id="cb66-237"><a href="#cb66-237" aria-hidden="true" tabindex="-1"></a>  <span class="at">fin_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">2</span>]</span>
+<span id="cb66-238"><a href="#cb66-238" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-239"><a href="#cb66-239" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-240"><a href="#cb66-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-241"><a href="#cb66-241" aria-hidden="true" tabindex="-1"></a>Si solo quieres conservar las nuevas variables, usa **`transmute()`**:</span>
+<span id="cb66-242"><a href="#cb66-242" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-245"><a href="#cb66-245" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-246"><a href="#cb66-246" aria-hidden="true" tabindex="-1"></a><span class="fu">transmute</span>(</span>
+<span id="cb66-247"><a href="#cb66-247" aria-hidden="true" tabindex="-1"></a>  z_amortiguamiento_sl,</span>
+<span id="cb66-248"><a href="#cb66-248" aria-hidden="true" tabindex="-1"></a>  <span class="at">area_ha =</span> Superficie <span class="sc">/</span> <span class="dv">10000</span>,</span>
+<span id="cb66-249"><a href="#cb66-249" aria-hidden="true" tabindex="-1"></a>  <span class="at">inicio_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">1</span>],</span>
+<span id="cb66-250"><a href="#cb66-250" aria-hidden="true" tabindex="-1"></a>  <span class="at">fin_legal =</span> <span class="fu">str_split</span>(Periodo, <span class="st">"-"</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)[,<span class="dv">2</span>]</span>
+<span id="cb66-251"><a href="#cb66-251" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb66-252"><a href="#cb66-252" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-253"><a href="#cb66-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-254"><a href="#cb66-254" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Funciones de creación útiles</span></span>
+<span id="cb66-255"><a href="#cb66-255" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-256"><a href="#cb66-256" aria-hidden="true" tabindex="-1"></a>Hay muchas funciones para crear nuevas variables que puedes usar con <span class="in">`mutate()`</span>. La propiedad clave es que la función debe ser vectorizada: debe tomar un vector de valores como input, y devolver un vector con el mismo número de valores como output. No hay forma de enumerar todas las posibles funciones que podrías usar, pero aquí hay una selección de funciones que frecuentemente son útiles:</span>
+<span id="cb66-257"><a href="#cb66-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-258"><a href="#cb66-258" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Operadores aritméticos: <span class="in">`+`</span>, <span class="in">`-`</span>, <span class="in">`*`</span>, <span class="in">`/`</span>, <span class="in">`^`</span>. Todos están vectorizados usando las llamadas **"reglas de reciclaje"**. Si un parámetro es más corto que el otro, se extenderá automáticamente para tener la misma longitud. Esto es muy útil cuando uno de los argumentos es un solo número: <span class="in">`Superficie / 100000`</span>, <span class="in">`hours * 60 + minute`</span>, etc. Los operadores aritméticos también son útiles junto con las funciones de agregar que aprenderás más adelante. Por ejemplo, <span class="in">`x / sum(x)`</span> calcula la proporción de un total, y <span class="in">`y - mean(y)`</span> calcula la diferencia de la media.</span>
+<span id="cb66-259"><a href="#cb66-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-260"><a href="#cb66-260" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Aritmética modular**: **`%/%`** (división entera) y **`%%`** (resto), donde <span class="in">`x == y * (x %/% y) + (x %% y)`</span>. La aritmética modular es una herramienta útil porque te permite dividir enteros en partes. </span>
+<span id="cb66-261"><a href="#cb66-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-262"><a href="#cb66-262" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Logaritmos:** <span class="in">`log()`</span>, <span class="in">`log2()`</span>, <span class="in">`log10()`</span>. Los logaritmos son increíblemente útiles como transformación para trabajar con datos con múltiples órdenes de magnitud. También convierten las relaciones multiplicativas en aditivas, bastante empleados cuando se trabajan con modelos. En igualdad de condiciones, recomendamos usar <span class="in">`log2()`</span> porque es más fácil de interpretar: una diferencia de 1 en la escala de registro corresponde a la duplicación de la escala original y una diferencia de -1 corresponde a dividir a la mitad.</span>
+<span id="cb66-263"><a href="#cb66-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-264"><a href="#cb66-264" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Rezagos:** <span class="in">`lead()`</span> y <span class="in">`lag()`</span> te permiten referirte a un valor adelante o un valor atrás (con rezago). Esto te permite calcular las diferencias móviles (por ejemplo, <span class="in">`x - lag(x)`</span>) o encontrar cuándo cambian los valores <span class="in">`(x! = lag (x))`</span>. Estos comandos son más útiles cuando se utilizan junto con <span class="in">`group_by()`</span>, algo que aprenderás en breve.</span>
+<span id="cb66-265"><a href="#cb66-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-268"><a href="#cb66-268" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-269"><a href="#cb66-269" aria-hidden="true" tabindex="-1"></a>(x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb66-270"><a href="#cb66-270" aria-hidden="true" tabindex="-1"></a><span class="fu">lag</span>(x)</span>
+<span id="cb66-271"><a href="#cb66-271" aria-hidden="true" tabindex="-1"></a><span class="fu">lead</span>(x)</span>
+<span id="cb66-272"><a href="#cb66-272" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-273"><a href="#cb66-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-274"><a href="#cb66-274" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**Agregados acumulativos y móviles:** R proporciona funciones para ejecutar sumas, productos, mínimos y máximos: `cumsum()`, `cumprod()`, `cummin()`, `cummax()`; **dplyr**, por su parte, proporciona `cummean()` para las medias acumuladas. Si necesitas calcular agregados móviles (es decir, una suma calculada en una ventana móvil), prueba el paquete **RcppRoll**.</span>
+<span id="cb66-275"><a href="#cb66-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-278"><a href="#cb66-278" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-279"><a href="#cb66-279" aria-hidden="true" tabindex="-1"></a>x</span>
+<span id="cb66-280"><a href="#cb66-280" aria-hidden="true" tabindex="-1"></a><span class="fu">cumsum</span>(x)</span>
+<span id="cb66-281"><a href="#cb66-281" aria-hidden="true" tabindex="-1"></a><span class="fu">cummean</span>(x)</span>
+<span id="cb66-282"><a href="#cb66-282" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-283"><a href="#cb66-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-284"><a href="#cb66-284" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>Comparaciones lógicas: <span class="in">`&lt;`</span>, <span class="in">`&lt;=`</span>, <span class="in">`&gt;`</span>, <span class="in">`&gt;=`</span>, <span class="in">`!=`</span>. Si estás haciendo una secuencia compleja de operaciones lógicas, es a menudo una buena idea almacenar los valores provisionales en nuevas variables para que puedas comprobar que cada paso funciona como se espera.</span>
+<span id="cb66-285"><a href="#cb66-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-286"><a href="#cb66-286" aria-hidden="true" tabindex="-1"></a><span class="fu">### Resúmenes agrupados con summarise()</span></span>
+<span id="cb66-287"><a href="#cb66-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-288"><a href="#cb66-288" aria-hidden="true" tabindex="-1"></a>El último verbo clave es **`summarise()`** (resumir, en inglés). Se encarga de colapsar un data frame en una sola fila:</span>
+<span id="cb66-289"><a href="#cb66-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-292"><a href="#cb66-292" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-293"><a href="#cb66-293" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(z_amortiguamiento, <span class="at">area_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb66-294"><a href="#cb66-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-295"><a href="#cb66-295" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-296"><a href="#cb66-296" aria-hidden="true" tabindex="-1"></a>En caso se requiera categorizar una columna utilizaremos <span class="in">`case_when()`</span> dentro de la función <span class="in">`mutate()`</span>.</span>
+<span id="cb66-297"><a href="#cb66-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-298"><a href="#cb66-298" aria-hidden="true" tabindex="-1"></a><span class="in">`summarise()`</span> no es muy útil a menos que lo enlacemos con <span class="in">`group_by()`</span>. Esto cambia la unidad de análisis del conjunto de datos completo a grupos individuales. Luego, cuando uses los verbos **dplyr** en un data frame agrupado, estos se aplicarán automáticamente **"por grupo"**. Por ejemplo, si aplicamos exactamente el mismo código a un dataframe agrupado por fecha, obtenemos el retraso promedio por fecha:</span>
+<span id="cb66-299"><a href="#cb66-299" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-302"><a href="#cb66-302" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb66-303"><a href="#cb66-303" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_g <span class="ot">&lt;-</span> <span class="fu">mutate</span>(z_amortiguamiento, </span>
+<span id="cb66-304"><a href="#cb66-304" aria-hidden="true" tabindex="-1"></a>       <span class="at">Grupo =</span> <span class="fu">case_when</span>(</span>
+<span id="cb66-305"><a href="#cb66-305" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&lt;</span> <span class="dv">50000</span> <span class="sc">~</span> <span class="st">"Grupo1"</span>,</span>
+<span id="cb66-306"><a href="#cb66-306" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">50000</span> <span class="sc">&amp;</span> Superficie <span class="sc">&lt;=</span> <span class="dv">100000</span> <span class="sc">~</span> <span class="st">"Grupo2"</span>,</span>
+<span id="cb66-307"><a href="#cb66-307" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">100000</span> <span class="sc">&amp;</span> Superficie <span class="sc">&lt;=</span> <span class="dv">200000</span> <span class="sc">~</span> <span class="st">"Grupo3"</span>,</span>
+<span id="cb66-308"><a href="#cb66-308" aria-hidden="true" tabindex="-1"></a>         Superficie <span class="sc">&gt;=</span> <span class="dv">200000</span> <span class="sc">~</span> <span class="st">"Grupo4"</span></span>
+<span id="cb66-309"><a href="#cb66-309" aria-hidden="true" tabindex="-1"></a>       ))</span>
+<span id="cb66-310"><a href="#cb66-310" aria-hidden="true" tabindex="-1"></a>by_group <span class="ot">&lt;-</span> <span class="fu">group_by</span>(z_amortiguamiento_g, Grupo)</span>
+<span id="cb66-311"><a href="#cb66-311" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize</span>(by_group, <span class="at">sup_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb66-312"><a href="#cb66-312" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-313"><a href="#cb66-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-314"><a href="#cb66-314" aria-hidden="true" tabindex="-1"></a>Juntos <span class="in">`group_by()`</span> y <span class="in">`summarise()`</span> proporcionan una de las herramientas que más comúnmente usarás cuando trabajes con dplyr: resúmenes agrupados. Pero antes de ir más allá con esto, tenemos que introducir una idea nueva y poderosa: el <span class="in">`pipe`</span> (pronunciado /paip/, que en inglés significa ducto o tubería).</span>
+<span id="cb66-315"><a href="#cb66-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-316"><a href="#cb66-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Combinación de múltiples operaciones con el pipe</span></span>
+<span id="cb66-317"><a href="#cb66-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-318"><a href="#cb66-318" aria-hidden="true" tabindex="-1"></a>Imagina que queremos agrupar por grupos y generar un resumen de cuántos elementos y la media de estos hay en cada uno de ellos.</span>
+<span id="cb66-319"><a href="#cb66-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-320"><a href="#cb66-320" aria-hidden="true" tabindex="-1"></a>la relación entre la distancia y el atraso promedio para cada ubicación. Usando lo que sabes acerca de dplyr, podrías escribir un código como este:</span>
+<span id="cb66-321"><a href="#cb66-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-322"><a href="#cb66-322" aria-hidden="true" tabindex="-1"></a><span class="in">```{r warning=FALSE}</span></span>
+<span id="cb66-323"><a href="#cb66-323" aria-hidden="true" tabindex="-1"></a>z_amortiguamiento_r <span class="ot">&lt;-</span> z_amortiguamiento_g <span class="sc">%&gt;%</span> </span>
+<span id="cb66-324"><a href="#cb66-324" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Grupo) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-325"><a href="#cb66-325" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb66-326"><a href="#cb66-326" aria-hidden="true" tabindex="-1"></a>    <span class="at">cantidad =</span> <span class="fu">n</span>(),</span>
+<span id="cb66-327"><a href="#cb66-327" aria-hidden="true" tabindex="-1"></a>    <span class="at">sup_mean =</span> <span class="fu">mean</span>(Superficie, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb66-328"><a href="#cb66-328" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb66-329"><a href="#cb66-329" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-330"><a href="#cb66-330" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> z_amortiguamiento_r, <span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x =</span> Grupo, <span class="at">y =</span> cantidad)) <span class="sc">+</span></span>
+<span id="cb66-331"><a href="#cb66-331" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">size =</span> cantidad), <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb66-332"><a href="#cb66-332" aria-hidden="true" tabindex="-1"></a> <span class="fu">geom_smooth</span>(<span class="at">se =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb66-333"><a href="#cb66-333" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb66-334"><a href="#cb66-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-335"><a href="#cb66-335" aria-hidden="true" tabindex="-1"></a>Se puede resumir en tres pasos para preparar la información:</span>
+<span id="cb66-336"><a href="#cb66-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-337"><a href="#cb66-337" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Agrupar los datos según el criterio a analizar.</span>
+<span id="cb66-338"><a href="#cb66-338" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Resumir para calcular la cantidad de cada grupo y el promedio por cada uno de ellos.</span>
+<span id="cb66-339"><a href="#cb66-339" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Filtrar para eliminar datos ruidosos.</span>
+<span id="cb66-340"><a href="#cb66-340" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-341"><a href="#cb66-341" aria-hidden="true" tabindex="-1"></a>Lo que permite el uso del <span class="in">`pipe`</span> es hacer una secuencia más fácil de leer. Se puede leer como una serie de declaraciones imperativas: **agrupa**, luego **resume** y luego **filtra**. Como sugiere esta lectura, una buena forma de pronunciar **`%&gt;%`** cuando se lee el código es **"luego"**.</span>
+<span id="cb66-342"><a href="#cb66-342" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-343"><a href="#cb66-343" aria-hidden="true" tabindex="-1"></a>Lo que ocurre detrás del código, es que **x %\&gt;% f(y)** se convierte en **f(x, y)**, y **x %\&gt;% f(y) %\&gt;% g(z)** se convierte en **g(f(x, y), z)** y así sucesivamente. Puedes usar el ***pipe*** para reescribir múltiples operaciones de forma que puedas leer de izquierda a derecha, de arriba hacia abajo. **Usaremos pipes con frecuencia a partir de ahora porque mejora considerablemente la legibilidad del código**. </span>
+<span id="cb66-344"><a href="#cb66-344" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-345"><a href="#cb66-345" aria-hidden="true" tabindex="-1"></a>Trabajar con el pipe es uno de los criterios clave para pertenecer al tidyverse. La única excepción es ggplot2: se escribió antes de que se descubriera el pipe. Lamentablemente, la siguiente iteración de ggplot2, ggvis, que sí utiliza el pipe, aún no está lista para el horario estelar.</span>
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Copyright (c) | Powered by <a href="https://quarto.org/">Quarto</a> <!--?quarto.version?--></div>   
+  </div>
+</footer>
+
+
+
+</body></html>
