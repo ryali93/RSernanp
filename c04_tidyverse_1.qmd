@@ -130,7 +130,7 @@ dplyr::filter(z_amortiguamiento,!(Superficie > 8652.24  | Superficie < 26.2))
 
 ### Reordenar las filas con arrange()
 
-**`arrange()** funciona de manera similar a`filter()\` excepto que en lugar de seleccionar filas, cambia su orden. La función toma un **dataframe** y un conjunto de nombres de columnas (o expresiones más complicadas) para ordenar según ellas. Si proporcionas más de un nombre de columna, cada columna adicional se utilizará para romper empates en los valores de las columnas anteriores:
+**`arrange()** funciona de manera similar a`filter()\` excepto que en lugar de seleccionar filas, cambia su orden. La función toma un** dataframe\*\* y un conjunto de nombres de columnas (o expresiones más complicadas) para ordenar según ellas. Si proporcionas más de un nombre de columna, cada columna adicional se utilizará para romper empates en los valores de las columnas anteriores:
 
 ```{r}
 arrange(z_amortiguamiento, Codigo)
@@ -145,7 +145,9 @@ arrange(z_amortiguamiento, desc(Superficie))
 ### Seleccionar columnas con select()
 
 <p align="center">
+
 <img src="fig/select.png" width="500"/>
+
 </p>
 
 No es raro obtener conjuntos de datos con cientos de variables. En este caso, el primer desafío a menudo se reduce a las variables que realmente te interesan. `select()` te permite seleccionar rápidamente un subconjunto útil utilizando operaciones basadas en los nombres de las variables.
@@ -189,7 +191,9 @@ dplyr::select(z_amortiguamiento, Superficie, everything())
 ### Añadir nuevas variables con mutate()
 
 <p align="center">
+
 <img src="fig/mutate.png" width="500"/>
+
 </p>
 
 Además de seleccionar conjuntos de columnas existentes, a menudo es útil crear nuevas columnas en función de columnas existentes. Ese es el trabajo de **`mutate()`** (del inglés mutar o transformar).
@@ -229,7 +233,7 @@ Hay muchas funciones para crear nuevas variables que puedes usar con `mutate()`.
 
 -   Operadores aritméticos: `+`, `-`, `*`, `/`, `^`. Todos están vectorizados usando las llamadas **"reglas de reciclaje"**. Si un parámetro es más corto que el otro, se extenderá automáticamente para tener la misma longitud. Esto es muy útil cuando uno de los argumentos es un solo número: `Superficie / 100000`, `hours * 60 + minute`, etc. Los operadores aritméticos también son útiles junto con las funciones de agregar que aprenderás más adelante. Por ejemplo, `x / sum(x)` calcula la proporción de un total, y `y - mean(y)` calcula la diferencia de la media.
 
--   **Aritmética modular**: **`%/%`** (división entera) y **`%%`** (resto), donde `x == y * (x %/% y) + (x %% y)`. La aritmética modular es una herramienta útil porque te permite dividir enteros en partes. 
+-   **Aritmética modular**: **`%/%`** (división entera) y **`%%`** (resto), donde `x == y * (x %/% y) + (x %% y)`. La aritmética modular es una herramienta útil porque te permite dividir enteros en partes.
 
 -   **Logaritmos:** `log()`, `log2()`, `log10()`. Los logaritmos son increíblemente útiles como transformación para trabajar con datos con múltiples órdenes de magnitud. También convierten las relaciones multiplicativas en aditivas, bastante empleados cuando se trabajan con modelos. En igualdad de condiciones, recomendamos usar `log2()` porque es más fácil de interpretar: una diferencia de 1 en la escala de registro corresponde a la duplicación de la escala original y una diferencia de -1 corresponde a dividir a la mitad.
 
@@ -304,6 +308,6 @@ Se puede resumir en tres pasos para preparar la información:
 
 Lo que permite el uso del `pipe` es hacer una secuencia más fácil de leer. Se puede leer como una serie de declaraciones imperativas: **agrupa**, luego **resume** y luego **filtra**. Como sugiere esta lectura, una buena forma de pronunciar **`%>%`** cuando se lee el código es **"luego"**.
 
-Lo que ocurre detrás del código, es que **x %\>% f(y)** se convierte en **f(x, y)**, y **x %\>% f(y) %\>% g(z)** se convierte en **g(f(x, y), z)** y así sucesivamente. Puedes usar el ***pipe*** para reescribir múltiples operaciones de forma que puedas leer de izquierda a derecha, de arriba hacia abajo. **Usaremos pipes con frecuencia a partir de ahora porque mejora considerablemente la legibilidad del código**. 
+Lo que ocurre detrás del código, es que **x %\>% f(y)** se convierte en **f(x, y)**, y **x %\>% f(y) %\>% g(z)** se convierte en **g(f(x, y), z)** y así sucesivamente. Puedes usar el ***pipe*** para reescribir múltiples operaciones de forma que puedas leer de izquierda a derecha, de arriba hacia abajo. **Usaremos pipes con frecuencia a partir de ahora porque mejora considerablemente la legibilidad del código**.
 
 Trabajar con el pipe es uno de los criterios clave para pertenecer al tidyverse. La única excepción es ggplot2: se escribió antes de que se descubriera el pipe. Lamentablemente, la siguiente iteración de ggplot2, ggvis, que sí utiliza el pipe, aún no está lista para el horario estelar.
