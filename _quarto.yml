@@ -38,6 +38,7 @@ book:
     - c03_intro_R2.qmd
     - c04_tidyverse_1.qmd
     - c04_tidyverse_3.qmd
+    - c05_spatial.qmd
 
 format:
   html:
